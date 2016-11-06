@@ -1,3 +1,5 @@
+/* @flow */
+
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -19,7 +21,7 @@ const wordsToHighlight = GLOBAL.WORDS_DATA;
 var ignoreList = [];
 /* --- */
 
-export default class pandora extends Component 
+export default class pandora extends Component
 {
     constructor(props) {
         super(props);
@@ -41,32 +43,41 @@ export default class pandora extends Component
             tempChar = content.substring(content.length - 1);
             newContent = content.substring(0, content.length - 1);
         }
-        else 
+        else
         {
             tempChar = '';
             newContent = content;
         }
-        
+
         //Highlight
         return (
             <View key={i} style={{ flexDirection: 'row' }}>
 
                 {/* Actual highlighted word */}
-                <TouchableHighlight                     
+                <TouchableHighlight
                     onPress={() => {
-                        this.refs.qModal.open(code);
+                        GLOBAL.QUESTION_DATA.forEach((value, index) => {
+                            if (value.CODE == code)
+                                GLOBAL.ARTICLEMODAL.setState({ curQuestion: value });
+                        })
+
+                        if (type == 'GRAMMAR')
+                            GLOBAL.ARTICLEMODAL.setState({ questionColor: GLOBAL.grammarColor })
+                        else GLOBAL.ARTICLEMODAL.setState({ questionColor: GLOBAL.vocabColor });
+
+                        this.refs.qModal.open();
                     }}
-                    style={{ backgroundColor: bColor, borderRadius: 5 }}
+                    style={{ backgroundColor: bColor, borderRadius: 5, marginTop: 2, marginBottom: 2 }}
                     underlayColor={uColor}>
 
-                    <View style={{ flexDirection: 'row' }}>                        
-                        <Image 
+                    <View style={{ flexDirection: 'row' }}>
+                        <Image
                             source={require('./images/icon_undone.png')}
                             resizeMode='center'/>
 
                         <Text style={{ color: 'black' }}>{newContent}</Text>
 
-                        <Image 
+                        <Image
                             source={require('./images/icon_fake.png')}
                             resizeMode='center'/>
                     </View>
@@ -109,11 +120,15 @@ export default class pandora extends Component
         }
 
         //else just return normal word
-        return (<Text key={i}  onPress={() => console.log(this.state.qCode)}>{word} </Text>);
+        return (
+            <Text key={i} onPress={() => alert(`Selected: "` + word + `"`)} style={{ marginTop: 2, marginBottom: 2 }}>
+                {word}{' '}
+            </Text>
+        );
     }
 
     //Main render function
-    render() 
+    render()
     {
         return (
             <View style={{flex: 1}}>

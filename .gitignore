@@ -1,2 +1,12 @@
 android/gradle/
 android/gradle.properties
+android/app/build/
+node_modules/
+android/.idea/
+android/.gradle/
+android/build/
+.vscode/
+android/local.properties
+android/pandora.iml
+typings/react-native.d.ts
+android/app/app.iml
