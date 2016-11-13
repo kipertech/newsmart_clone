@@ -9,18 +9,21 @@ import {
   Dimensions,
   Image,
   ScrollView,
-  StatusBar
+  StatusBar,
+  findNodeHandle
 } from 'react-native';
 const GLOBAL = require('./global');
+const EXTRA = require('./components/extra_functions')
+import Triangle from './components/Triangle';
 import QuestionModal from './scenes/modal';
 import * as Progress from 'react-native-progress';
 
 /* --- */
 const words = GLOBAL.ARTICLE.CONTENT.split(' ');
-let st = Dimensions.get('window').width;
+let st = Dimensions.get('window');
 const wordsToHighlight = GLOBAL.ARTICLE.WORDS_DATA;
 var ignoreList = [];
-var offset = 0;
+var offset = 0, currentOffset = 0;
 var totalVocabPoint = 0, totalGrammarPoint = 0;
 /* --- */
 
@@ -35,12 +38,24 @@ export default class pandora extends Component
             passedImage: true,
 
             //Question Data
-            qCode: ''
+            qCode: '',
+
+            //Action bar
+            closeButton: require('./images/button_close_white.png'),
+            starButton: require('./images/button_star_uncheck.png'),
+
+            //Triangle
+            triangleStyle: { top: -20, left: -20 }
         };
     }
 
     componentWillMount() {
         this.calculatePoints();
+        GLOBAL.ARTICLESCENE = this;
+    }
+
+    componentWillUnmount() {
+        GLOBAL.ARTICLESCENE = null;
     }
 
     //Calculate total points
@@ -82,17 +97,43 @@ export default class pandora extends Component
 
                 {/* Actual highlighted word */}
                 <TouchableHighlight
+                    ref={'word_' + id}
                     onPress={() => {
+                        let modalQuestion;
+
                         GLOBAL.QUESTION_DATA.forEach((value, index) => {
                             if (value.CODE == code)
-                                GLOBAL.ARTICLEMODAL.setState({ curQuestion: value, shuffled: false });
+                            {
+                                modalQuestion = value;
+                                GLOBAL.ARTICLEMODAL.setState({ curQuestion: value });
+                            }
                         });
 
                         if (type == 'GRAMMAR')
                             GLOBAL.ARTICLEMODAL.setState({ questionColor: GLOBAL.grammarColor, mouseDownColor: GLOBAL.grammarMouseDownColor })
                         else GLOBAL.ARTICLEMODAL.setState({ questionColor: GLOBAL.vocabColor, mouseDownColor: GLOBAL.vocabMouseDownColor });
+                        
+                        //Scroll the view to the word
+                        var nHandler = findNodeHandle(this.refs.mainPanel);
+                        this.refs['word_' + id].measureLayout(nHandler, (x, y, width, height) => {
+                            this.refs.mainPanel.scrollTo({ y: y - (st.height * 0.2) + height + 20 });
 
-                        this.refs.qModal.open();
+                             //Open the modal
+                            if (modalQuestion.TYPE == 'DRAGWORD')
+                            {
+                                let newArr = modalQuestion.ANSWERS.slice();
+                                newArr = EXTRA.shuffle(newArr);
+                                this.refs.qModal.open(true, newArr);
+                            }
+                            else this.refs.qModal.open(false);
+
+                            setTimeout(() => this.refs['word_' + id].measureInWindow((xWindow) => {
+                                this.setState({ triangleStyle: { left: xWindow + (width / 2) } })    
+                            }), 100)
+                            //Set position for the triangle
+                            
+                        });
+
                      }}
 
                     style={{ backgroundColor: bColor, borderRadius: 5, marginTop: 2, marginBottom: 2 }}
@@ -125,7 +166,7 @@ export default class pandora extends Component
             return(<View key={i}/>);
 
         if (word == '\n')
-            return (<Text key={i} style={{ marginTop: 2, marginBottom: 2, width: st }}>{' '}</Text>);
+            return (<Text key={i} style={{ marginTop: 2, marginBottom: 2, width: st.width }}>{' '}</Text>);
 
         //Search for phrase with multiple words
         for (var j = 0; j < wordsToHighlight.length; ++j)
@@ -182,7 +223,7 @@ export default class pandora extends Component
                 <View style={{ flexDirection: 'row', position: 'absolute', left: 0, bottom: 0 }}>
                     <Progress.Bar 
                         progress={GLOBAL.ARTICLE.CURVOCABPOINT / totalVocabPoint} 
-                        width={st / 2} height={5}
+                        width={st.width / 2} height={5}
                         borderRadius={0}
                         borderWidth={0}
                         color={GLOBAL.vocabPointUpperColor}
@@ -191,7 +232,7 @@ export default class pandora extends Component
 
                     <Progress.Bar 
                         progress={GLOBAL.ARTICLE.CURGRAMMARPOINT / totalGrammarPoint}
-                        width={st / 2} height={5}
+                        width={st.width / 2} height={5}
                         borderRadius={0}
                         borderWidth={0}
                         color={GLOBAL.grammarPointUpperColor}
@@ -209,14 +250,14 @@ export default class pandora extends Component
         if (this.state.scrollDirection)
         {
             return(
-                <View style={{ width: st, height: 50, backgroundColor: 'transparent', position: 'absolute', top: 0, left: 0 }}>
-                    <View style={{ width: st, height: 45, backgroundColor: this.state.topPanelColor, position: 'absolute', top: 0, left: 0 }}>
+                <View style={{ width: st.width, height: 50, backgroundColor: 'transparent', position: 'absolute', top: 0, left: 0 }}>
+                    <View style={{ width: st.width, height: 45, backgroundColor: this.state.topPanelColor, position: 'absolute', top: 0, left: 0 }}>
                         {/* Close button */}
                         <TouchableOpacity
                             onPress={() => this.refs.mainModal.close()}
                             style={{ width: 50, height: 45, position: 'absolute', top: 0, left: 0, alignItems: 'center', justifyContent: 'center' }}>
                             <Image
-                                source={require('./images/button_close_white.png')}
+                                source={this.state.closeButton}
                                 style={{ width: 15, height: 15 }}
                                 resizeMode='stretch'
                             />
@@ -226,10 +267,10 @@ export default class pandora extends Component
 
                         {/* Star button */}
                         <TouchableOpacity
-                            onPress={() => this.refs.mainModal.close()}
+                            onPress={() => { GLOBAL.ARTICLE.STARRED = !GLOBAL.ARTICLE.STARRED; this.onScroll() }}
                             style={{ width: 50, height: 45, position: 'absolute', top: 0, right: 0, alignItems: 'center', justifyContent: 'center' }}>
                             <Image
-                                source={require('./images/button_star_check.png')}
+                                source={this.state.starButton}
                                 style={{ width: 20, height: 20 }}
                                 resizeMode='stretch'
                             />
@@ -243,7 +284,7 @@ export default class pandora extends Component
         else
         {
             return(
-                <View style={{ width: st, height: 5, position: 'absolute', top: 0, left: 0 }}>
+                <View style={{ width: st.width, height: 5, position: 'absolute', top: 0, left: 0 }}>
                     { this.renderSmallProgress() }
                 </View>
             )
@@ -257,21 +298,35 @@ export default class pandora extends Component
 
     onScroll(event)
     {
-        var currentOffset = event.nativeEvent.contentOffset.y;        
-        if (currentOffset < 0)
-            currentOffset = 0;
-		var direction = currentOffset > offset ? false : true;
-  	    offset = currentOffset;
+        if (event != undefined && event != null)
+        {
+            currentOffset = event.nativeEvent.contentOffset.y;        
+            if (currentOffset < 0)
+                currentOffset = 0;
+            var direction = currentOffset > offset ? false : true;
+            offset = currentOffset;
+            
+            this.setState({ scrollDirection: direction });
+        }
         
-        this.setState({ scrollDirection: direction });
         //Set color when it passes through the image
-        if (currentOffset <= (st * 0.6 - 45))
-            this.setState({ topPanelColor: 'transparent' });
+        if (currentOffset <= (st.width * 0.6 - 45))
+        {
+            this.setState({ topPanelColor: 'transparent', closeButton: require('./images/button_close_white.png') });
+            if (GLOBAL.ARTICLE.STARRED)
+                this.setState({ starButton: require('./images/button_star_check.png') })
+            else this.setState({ starButton: require('./images/button_star_uncheck.png') })
+        }
         else
-            this.setState({ topPanelColor: 'white' });
+        {
+            this.setState({ topPanelColor: 'white', closeButton: require('./images/button_close_orange.png') });
+            if (GLOBAL.ARTICLE.STARRED)
+                this.setState({ starButton: require('./images/button_star_check_orange.png') })
+            else this.setState({ starButton: require('./images/button_star_uncheck_orange.png') })
+        }
 
-        //
-        if (currentOffset <= (st * 0.6 - 5))
+        //Indicate when it passes thorugh the progress indicators
+        if (currentOffset <= (st.width * 0.6 - 5))
             this.setState({ passedImage: true });
         else
             this.setState({ passedImage: false });
@@ -283,7 +338,8 @@ export default class pandora extends Component
         return (
             <View style={{ flex: 1 }}>
                 {/* Main content */}
-                <ScrollView 
+                <ScrollView
+                    ref='mainPanel'
                     onScroll={this.onScroll.bind(this)}
                     style={{ flex: 1 }} 
                     scrollEventThrottle={1}
@@ -297,8 +353,8 @@ export default class pandora extends Component
                     <View style={{ backgroundColor: '#F4F4F4' }}>
                         {/* Main Image */}
                         <Image
-                            source={require('./images/demo_articleImage.jpg')}
-                            style={{ width: st, height: st * 0.6, flexDirection: 'row' }}
+                            source={{ uri: GLOBAL.ARTICLE.IMAGE }}
+                            style={{ width: st.width, height: st.width * 0.6, flexDirection: 'row' }}
                             resizeMode='stretch'>
 
                             <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'black', opacity: 0.2 }}/>
@@ -308,10 +364,10 @@ export default class pandora extends Component
                         </Image>
 
                         {/* Point progress */}
-                        <View style={{ width: st, flexDirection: 'row' }}>
+                        <View style={{ width: st.width, flexDirection: 'row' }}>
                             <Progress.Bar 
                                 progress={GLOBAL.ARTICLE.CURVOCABPOINT / totalVocabPoint} 
-                                width={st / 2} height={40}
+                                width={st.width / 2} height={40}
                                 borderRadius={0}
                                 borderWidth={0}
                                 color={GLOBAL.vocabPointUpperColor}
@@ -327,7 +383,7 @@ export default class pandora extends Component
 
                             <Progress.Bar 
                                 progress={GLOBAL.ARTICLE.CURGRAMMARPOINT / totalGrammarPoint}
-                                width={st / 2} height={40}
+                                width={st.width / 2} height={40}
                                 borderRadius={0}
                                 borderWidth={0}
                                 color={GLOBAL.grammarPointUpperColor}
@@ -345,7 +401,7 @@ export default class pandora extends Component
                         {/* Objective Info */}
                         <View style={{ padding: 15, flexDirection: 'row' }}>
                             {/* Objective */}
-                            <View style={{ width: st - 30 - 50, paddingRight: 5 }}>
+                            <View style={{ width: st.width - 30 - 50, paddingRight: 5 }}>
                                 <Text style={{ color: 'rgb(142, 147, 148)' }}>LEARNING OBJECTIVE</Text>
                                 <Text style={{ fontWeight: 'bold' }}>{GLOBAL.ARTICLE.OBJECTIVE}</Text>
                                 <Text>{GLOBAL.ARTICLE.DESCRIPTION}</Text>
@@ -390,7 +446,7 @@ export default class pandora extends Component
                         </View>
 
                         {/* Footer Content */}
-                        <View style={{ width: st, marginTop: 40, flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={{ width: st.width, marginTop: 40, flexDirection: 'row', alignItems: 'center' }}>
                             {/* Date and author */}
                             <View>
                                 <Text style={{ color: 'gray' }}>{GLOBAL.ARTICLE.DATE}</Text>
@@ -417,6 +473,15 @@ export default class pandora extends Component
                 { this.renderTopPanel() }
 
                 <QuestionModal ref='qModal'/>
+
+                {/* Triangle */}
+                <Triangle
+                    width={20}
+                    height={20}
+                    color={'#F5F5F5'}
+                    direction={'up'}
+                    style={[this.state.triangleStyle, { position: 'absolute', top: st.height * 0.2 - 20, borderWidth: 2, borderColor: 'black' }]}
+                />
             </View>
         );
     }

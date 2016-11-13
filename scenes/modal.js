@@ -18,43 +18,14 @@ var Option = Radio.Option;
 import CheckBox from 'react-native-check-box';
 import DragButton from '../components/dragButton';
 import SortableListView from 'react-native-sortable-listview';
+import SortableList from 'react-native-sortable-list';
 GLOBAL = require('../global');
+EXTRA = require('../components/extra_functions')
 
 //Variables
-let stW = Dimensions.get('window').width, stH = Dimensions.get('window').height;
-let selectedMulti = [];
+let st = Dimensions.get('window');
+var selectedMulti = [], selectedRadio = -1;
 var obj = {}, curArray = [];
-
-//Shuffle words with drag word question
-function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
-
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
-}
-
-function getObjSize(_obj)
-{
-    //Calculate the size of the object
-    var size = 0, key;
-    for (key in _obj) {
-        if (_obj.hasOwnProperty(key)) size++;
-    }
-
-    return size;
-}
 
 export default class QuestionModal extends Component {
     constructor(props) {
@@ -65,12 +36,6 @@ export default class QuestionModal extends Component {
             //Settings
             questionColor: GLOBAL.vocabColor,
             mouseDownColor: GLOBAL.vocabMouseDownColor,
-
-            //Selected Radio
-            selectedRadio: 0,
-
-            //DragWord Mode
-            shuffled: false,
         }
     }
 
@@ -78,15 +43,23 @@ export default class QuestionModal extends Component {
         GLOBAL.ARTICLEMODAL = this;
     }
 
-    open()
+    open(isDrag, dragArray)
     {
+        if (isDrag)
+            curArray = dragArray;
+
+        //Reset all data
+        obj = {};
+        selectedMulti = [];
+        selectedRadio = -1;
+
+        //Open the modal
         this.refs.mainModal.open();
     }
 
-    //Manage all render styles
+    //Manage all render modes
     pickRender()
     {   
-        //Pick render mode for each type of question
         if (this.state.curQuestion.TYPE == 'SINGLECHOICE')
             return(this.renderSingleChoice())
         else if (this.state.curQuestion.TYPE == 'MULTIPLECHOICE')
@@ -95,55 +68,56 @@ export default class QuestionModal extends Component {
             return(this.renderDragQuestion())
     }
 
-    onAdd(key, value)
+    onAdd(value)
     {
         //Add new item to the current object
-        obj[`${getObjSize(obj)}`] = { KEY: key, WORD: value };
+        obj[`${EXTRA.getObjSize(obj)}`] = { KEY: value.KEY, WORD: value.WORD };
 
         //Force re-render
-        this.setState();
-    }
+        this.forceUpdate();
 
-    onRemove(key)
-    {
-        var checkArr = Object.keys(obj);
-        checkArr.forEach(data => {
-            if (obj[data].KEY == key)
-            {
-                delete obj[data];
-                this.setState();
-            }
+        //Remove from list
+        curArray.forEach((data, index) => {
+            if (data == value)
+                curArray.splice(index, 1);
         })
     }
 
-    //DRAGWORD - Single Item
-    renderSingleDragWord(word, i)
+    onRemove(value)
     {
-        return <DragButton key={i} content={word} onClick={() => this.onAdd(i, word)} />
+        var checkArr = Object.keys(obj);
+        checkArr.forEach(data => {
+            if (obj[data].KEY == value.KEY)
+            {
+                delete obj[data];
+                this.forceUpdate();
+            }
+        })
+
+        //Put back to original list
+        curArray.push(value);
+    }
+
+    //DRAGWORD - Single Item
+    renderSingleDragWord(value)
+    {
+        return <DragButton key={value.KEY} content={value.WORD} onClick={() => this.onAdd(value)} />
     }
 
     //DRAGWORD - Map All
     renderDragQuestion()
     {
-        let newArr = this.state.curQuestion.ANSWERS.slice();
-        if (!this.state.shuffled)
-        {
-            newArr = shuffle(newArr);
-            this.setState({ shuffled: true })
-        }
-        curArray = newArr;
-
         return(
-            <ScrollView contentContainerStyle={{ padding: 15 }} style={{ height: stH * 0.8 - 130, width: stW }}>
+            <ScrollView contentContainerStyle={{ padding: 15 }} style={{ height: st.height * 0.8 - 130, width: st.width }}>
                 <SortableListView
-                    style={{ width: stW, height: 150, backgroundColor: 'rgb(142, 147, 148)', borderRadius: 10, paddingLeft: 5, paddingRight: 5 }}
-                    contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', padding: 1 }}
+                    style={{ width: st.width, height: 150, backgroundColor: 'rgb(142, 147, 148)' }}
+                    contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', padding: 5 }}
                     data={obj}
-                    renderRow={(data) => <DragButton key={data.KEY} content={data.WORD} onClick={() => this.onRemove(data.KEY)}/>}
+                    renderRow={(data) => <DragButton key={data.KEY} content={data.WORD} onClick={() => this.onRemove(data)}/>}
                 />
 
-                <View style={{ width: stW, backgroundColor: 'transparent', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', marginTop: 5, marginLeft: -2 }}>
-                    { curArray.map((value) => this.renderSingleDragWord(value.WORD, value.KEY)) }
+                <View style={{ width: st.width, backgroundColor: 'transparent', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', marginTop: 5, marginLeft: -2 }}>
+                    { curArray.map((value) => this.renderSingleDragWord(value)) }
                 </View>
             </ScrollView>
         )
@@ -156,9 +130,9 @@ export default class QuestionModal extends Component {
              <CheckBox
                 key={i}
                 onClick={() => {
-                    let index = selectedMulti.indexOf(i);
+                    let index = selectedMulti.indexOf(i + 1);
                     if (index < 0)
-                        selectedMulti.push(i)
+                        selectedMulti.push(i + 1)
                     else
                         selectedMulti.splice(index, 1)
                 }}
@@ -173,7 +147,7 @@ export default class QuestionModal extends Component {
     renderMultiChoice()
     {
         return (
-            <ScrollView contentContainerStyle={{ padding: 15 }} style={{ height: stH * 0.8 - 130 }}>
+            <ScrollView contentContainerStyle={{ padding: 15 }} style={{ height: st.height * 0.8 - 130 }}>
                 <Text style={{ fontSize: 18 }}>{this.state.curQuestion.QUESTION}</Text>
 
                 <Radio onSelect={this.onSelect.bind(this)}>
@@ -196,23 +170,66 @@ export default class QuestionModal extends Component {
     //RADIO - onSelect Event Handler
     onSelect(index)
     {
-        this.setState({
-            selectedRadio: index
-        });
+        selectedRadio = index + 1;
     }
 
     //RADIO - Map All Answers
     renderSingleChoice()
     {
         return (
-            <ScrollView contentContainerStyle={{ padding: 15 }} style={{ height: stH * 0.8 - 130 }}>
+            <ScrollView contentContainerStyle={{ padding: 15 }} style={{ height: st.height * 0.8 - 130 }}>
                 <Text style={{ fontSize: 18 }}>{this.state.curQuestion.QUESTION}</Text>
 
-                <Radio onSelect={this.onSelect.bind(this)} defaultSelect={0}>
+                <Radio onSelect={this.onSelect.bind(this)}>
                     { this.state.curQuestion.ANSWERS.map((value, index) => this.renderSingleChoiceRadio(value, index)) }
                 </Radio>
             </ScrollView>
         )
+    }
+
+    //onClick event for check button
+    onCheck()
+    {
+        if (this.state.curQuestion.TYPE == 'SINGLECHOICE')
+        {
+            if (selectedRadio == this.state.curQuestion.CORRECT_ANS)
+            {
+                alert('Corrected!');
+            }
+            else
+            {
+                alert('Wrong!');
+            }
+        }
+        else if (this.state.curQuestion.TYPE == 'MULTIPLECHOICE')
+        {
+            if (EXTRA.compareArrays(selectedMulti, this.state.curQuestion.CORRECT_ANS))
+            {
+                alert('Corrected!');
+            }
+            else
+            {
+                alert('Wrong!');
+            }
+        }
+        else if (this.state.curQuestion.TYPE == 'DRAGWORD')
+        {
+            let check = true;
+            Object.keys(obj).forEach((data) => {
+                if (obj[data].WORD != this.state.curQuestion.ANSWERS[data].WORD)
+                    check = false;
+            })
+            //
+            if (check)
+            {
+                alert('Corrected!');
+            }
+            else
+            {
+                alert('Wrong!');
+            }
+        }
+        else Alert.alert('Pandora Enki', 'Unsupported question type, please contact the developer for more information')
     }
 
     //Main render function
@@ -220,7 +237,7 @@ export default class QuestionModal extends Component {
     {
         return (
             <Modal {...this.props}
-                style={{ height: stH * 0.8, width: stW, backgroundColor: '#F5F5F5' }}
+                style={{ height: st.height * 0.8, width: st.width, backgroundColor: '#F5F5F5' }}
                 position={'bottom'} ref={'mainModal'} backButtonClose={true}
                 backdropOpacity={0.7}
                 backdropPressToClose={false}
@@ -228,7 +245,7 @@ export default class QuestionModal extends Component {
                 >
 
                 {/* Title */}
-                <View style={{ flexDirection: 'row', height: 50, width: stW, alignItems: 'center', padding: 15 }}>
+                <View style={{ flexDirection: 'row', height: 50, width: st.width, alignItems: 'center', padding: 15 }}>
 
                     {/* Point */}
                     <View style={[styles.pointContainer, {borderColor: this.state.questionColor}]}>
@@ -241,16 +258,19 @@ export default class QuestionModal extends Component {
                     <View style={{ width: 1, height: 40, backgroundColor: 'gray', opacity: 0.2, marginLeft: 10 }} />
 
                     {/* Requirement */}
-                    <Text style={{color: 'black', marginLeft: 10, marginBottom: 3, width: stW - 150}}>
+                    <Text style={{color: 'black', marginLeft: 10, marginBottom: 5, marginTop: 5, width: st.width - 150}}>
                         {this.state.curQuestion.REQUIREMENT}
                     </Text>
 
                     {/* Close button */}
                     <TouchableOpacity
-                        onPress={() => this.refs.mainModal.close()}
+                        onPress={() => {
+                            GLOBAL.ARTICLESCENE.setState({ triangleStyle: { top: -20, left: -20 } }, () => this.refs.mainModal.close());
+                            
+                        }}
                         style={{ width: 50, height: 50, position: 'absolute', top: 0, right: 0, alignItems: 'center', justifyContent: 'center' }}>
                         <Image
-                            source={require('../images/button_close.png')}
+                            source={require('../images/button_close_black.png')}
                             style={{ width: 15, height: 15, opacity: 0.2 }}
                             resizeMode='stretch'
                         />
@@ -258,14 +278,19 @@ export default class QuestionModal extends Component {
                 </View>
 
                 {/* Divider */}
-                <View style={{ width: stW, height: 1, backgroundColor: 'gray', opacity: 0.2 }} />
+                <View style={{ width: st.width, height: 1, backgroundColor: 'gray', opacity: 0.2 }} />
 
                 { this.pickRender() }
 
                 {/* Check Button */}
-                <View style={{ flexDirection: 'row', height: 80, width: stW, backgroundColor: this.state.questionColor, alignItems: 'center', justifyContent: 'center', position: 'absolute', bottom: 0, left: 0 }}>
-                    <TouchableHighlight underlayColor={this.state.mouseDownColor} onPress={() => alert('hello')} style={{ backgroundColor: 'white', borderRadius: 4, width: stW - 30, height: 50, alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ flexDirection: 'row', height: 80, width: st.width, backgroundColor: this.state.questionColor, alignItems: 'center', justifyContent: 'center' }}>
+                    <TouchableHighlight 
+                        underlayColor={this.state.mouseDownColor} 
+                        onPress={() =>  this.onCheck()} 
+                        style={{ backgroundColor: 'white', borderRadius: 4, width: st.width - 30, height: 50, alignItems: 'center', justifyContent: 'center' }}>
+
                         <Text style={{ color: this.state.questionColor }}>CHECK</Text>
+
                     </TouchableHighlight>
                 </View>
             </Modal>

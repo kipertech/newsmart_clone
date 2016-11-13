@@ -1,6 +1,7 @@
 module.exports = {
     //Hard values
     ARTICLEMODAL: null,
+    ARTICLESCENE: null,
 
     //Settings
     vocabColor: '#FFBE40',
@@ -20,6 +21,8 @@ module.exports = {
 
         TITLE: `Twitter's Vine Shutdown Shows Split Between App’s Popularity, Profits`,
 
+        IMAGE: 'https://d34yfym6wfrgx6.cloudfront.net/uploads/article/custom_image/144308/super_large_MIT-Grad-Rankings_0.jpg',
+
         LEVEL: 3,
 
         OBJECTIVE: 'Pandora Level 4 (B2, TOEIC 551–668, TOEFL iBT 53–64, IELTS 5–6)',
@@ -36,8 +39,8 @@ module.exports = {
 
         STARRED: false,
 
-        CURVOCABPOINT: 10,
-        CURGRAMMARPOINT: 3,
+        CURVOCABPOINT: 0,
+        CURGRAMMARPOINT: 0,
 
         WORDS_DATA:
         [
@@ -89,6 +92,13 @@ module.exports = {
                 TYPE: 'GRAMMAR',
                 QUESTIONCODE: 'D1'
             },
+
+            {
+                POS: 511,
+                COUNT: 1,
+                TYPE: 'GRAMMAR',
+                QUESTIONCODE: 'D1'
+            },
         ],
     },
 
@@ -99,14 +109,14 @@ module.exports = {
             TYPE_QUESTION: 'VOCAB',
             CODE: 'O1',
             POINT: 5,
-            REQUIREMENT: 'Choose the correct answer(s)',
+            REQUIREMENT: 'Choose the correct answer',
             QUESTION: `If you're an "influencers" or "influential" on social media, _____.`,
             ANSWERS:
             [
                 "you don't have any followers",
                 "you have a lot of followers"
             ],
-            CORRECT_ANS: 1,
+            CORRECT_ANS: 2,
             INFORM: `You "influence" (= have an effect on) how people behave and think.`,
 
             USER_ANSWERS: -1,
@@ -125,8 +135,10 @@ module.exports = {
                 "Twitter",
                 "Microsoft",
                 "Tumblr",
+                "Google Chrome",
+                "Flickr"
             ],
-            CORRECT_ANS: [2, 4],
+            CORRECT_ANS: [3, 5],
             INFORM: `Social media is a group of Internet-based...`,
 
             USER_ANSWERS: [1],
@@ -185,7 +197,7 @@ module.exports = {
                 "cameras",
                 "messaging programs",
                 "music",
-                "web browsers"
+                "web browsers",
             ],
             CORRECT_ANS: 2,
             INFORM: `"App" is short for "application" or "application program," meaning a computer program that is designed for a particular purpose. App stores sell software and digital goods such as music, but do not usually sell hardware such as cameras.`,
