@@ -13,9 +13,9 @@ import {
   findNodeHandle
 } from 'react-native';
 const GLOBAL = require('./global');
-const EXTRA = require('./components/extra_functions')
-import Triangle from './components/Triangle';
+const EXTRA = require('./components/extra_functions');
 import QuestionModal from './scenes/modal';
+import ShareModal from './scenes/shareModal';
 import * as Progress from 'react-native-progress';
 
 /* --- */
@@ -25,6 +25,7 @@ const wordsToHighlight = GLOBAL.ARTICLE.WORDS_DATA;
 var ignoreList = [];
 var offset = 0, currentOffset = 0;
 var totalVocabPoint = 0, totalGrammarPoint = 0;
+var scrollHeight = 0;
 /* --- */
 
 export default class pandora extends Component
@@ -44,9 +45,12 @@ export default class pandora extends Component
             closeButton: require('./images/button_close_white.png'),
             starButton: require('./images/button_star_uncheck.png'),
 
-            //Triangle
-            triangleStyle: { top: -20, left: -20 }
+            //scrollHeight
+            spaceViewHeight: 0
         };
+
+        this.scrollHeight = 0;
+        this.overScroll = false;
     }
 
     componentWillMount() {
@@ -70,6 +74,123 @@ export default class pandora extends Component
             else if (GLOBAL.QUESTION_DATA[i].TYPE_QUESTION == 'GRAMMAR')
                 totalGrammarPoint = totalGrammarPoint + GLOBAL.QUESTION_DATA[i].POINT;
         }
+    }
+
+    //onPress event for each word
+    onWordPress(id, type, code)
+    {
+        let modalQuestion;
+
+        //Assign question data for modal
+        GLOBAL.QUESTION_DATA.forEach((value, index) => {
+            if (value.CODE == code)
+            {
+                modalQuestion = value;
+                GLOBAL.ARTICLEMODAL.setState({ curQuestion: value, wordID: id });
+            }
+        });
+
+        //Set the color for the modal
+        if (type == 'GRAMMAR')
+            GLOBAL.ARTICLEMODAL.setState({ questionColor: GLOBAL.grammarColor, mouseDownColor: GLOBAL.grammarMouseDownColor })
+        else GLOBAL.ARTICLEMODAL.setState({ questionColor: GLOBAL.vocabColor, mouseDownColor: GLOBAL.vocabMouseDownColor });
+        
+        //Scroll the view to the word
+        var nHandler = findNodeHandle(this.refs.mainPanel);
+        this.refs['word_' + id].measureLayout(nHandler, (x, y, width, height) => {
+
+            //Check if 
+            if ((y - (st.height * 0.2) + height + 20 + (st.height * 0.8)) > scrollHeight)
+            {
+                this.setState({ spaceViewHeight: scrollHeight + (st.height * 0.8) });
+                this.overScroll = true;
+            }
+            else
+            {
+                this.setState({ spaceViewHeight: 0 });
+                this.overScroll = false;
+            }
+
+            //Re-measure the layout to scroll
+            this.refs['word_' + id].measureLayout(nHandler, (x2, y2, width2, height2) => {
+                this.refs.mainPanel.scrollTo({ y: y2 - (st.height * 0.2) + height2 + 20 });
+
+                //Set the position for the triangle
+                this.refs['word_' + id].measureInWindow((xWindow) => {
+                    GLOBAL.ARTICLEMODAL.setState({ triangleStyle: { left: xWindow + (width / 2) } })    
+                })
+
+                function informUser(isCorrect)
+                {
+                    if (isCorrect)
+                        GLOBAL.ARTICLEMODAL.setState({ informText: 'Correct! ' + modalQuestion.INFORM })
+                    else GLOBAL.ARTICLEMODAL.setState({ informText: 'Incorrect answer. ' + modalQuestion.INFORM })
+                    
+                    //Set colors
+                    GLOBAL.ARTICLEMODAL.setState({
+                        generalColor: 'white',
+                        pointColor: 'white',
+                        titleColor: GLOBAL.ARTICLEMODAL.state.questionColor,
+                        pointText: 'points earned',
+                        checkText: 'NEXT',
+                        checkBorderWidth: 2
+                    })
+                };
+                
+                //Check if the ANSWERED question is correct
+                if (modalQuestion.USER_ANSWERS == -1 || modalQuestion.USER_ANSWERS.length == 0)
+                    GLOBAL.ARTICLEMODAL.setState({ 
+                        informText: '',
+                        generalColor: GLOBAL.ARTICLEMODAL.state.questionColor ,
+                        pointColor: 'black',
+                        titleColor: 'white',
+                        pointText: 'points',
+                        checkText: 'CHECK',
+                        checkBorderWidth: 0
+                    })
+                else
+                {
+                    if (modalQuestion.TYPE == 'SINGLECHOICE')
+                    {
+                        if (modalQuestion.USER_ANSWERS == modalQuestion.CORRECT_ANS)
+                            informUser(true)
+                        else informUser(false);
+                    }
+                    else if (modalQuestion.TYPE == 'MULTIPLECHOICE')
+                    {
+                        if (EXTRA.compareArrays(modalQuestion.USER_ANSWERS, modalQuestion.CORRECT_ANS))
+                            informUser(true)
+                        else informUser(false);
+                    }
+                    else if (modalQuestion.TYPE == 'DRAGWORD')
+                    {
+                        let checkArr = true;
+                        for (var i = 1; i < modalQuestion.USER_ANSWERS.length; ++i)
+                        {
+                            if (modalQuestion.USER_ANSWERS[i] < modalQuestion.USER_ANSWERS[i - 1])
+                            {
+                                checkArr = false;
+                                break;
+                            }
+                        }
+                        if (checkArr)
+                            informUser(true)
+                        else informUser(false);
+                    }
+                }
+
+                //Open the modal
+                if (modalQuestion.TYPE == 'DRAGWORD')
+                {
+                    let newArr = modalQuestion.ANSWERS.slice();
+                    newArr = EXTRA.shuffle(newArr);
+                    this.refs.qModal.open(true, newArr);
+                }
+                else this.refs.qModal.open(false);
+                
+            })
+
+        });
     }
 
     //Render highlighted word
@@ -98,44 +219,7 @@ export default class pandora extends Component
                 {/* Actual highlighted word */}
                 <TouchableHighlight
                     ref={'word_' + id}
-                    onPress={() => {
-                        let modalQuestion;
-
-                        GLOBAL.QUESTION_DATA.forEach((value, index) => {
-                            if (value.CODE == code)
-                            {
-                                modalQuestion = value;
-                                GLOBAL.ARTICLEMODAL.setState({ curQuestion: value });
-                            }
-                        });
-
-                        if (type == 'GRAMMAR')
-                            GLOBAL.ARTICLEMODAL.setState({ questionColor: GLOBAL.grammarColor, mouseDownColor: GLOBAL.grammarMouseDownColor })
-                        else GLOBAL.ARTICLEMODAL.setState({ questionColor: GLOBAL.vocabColor, mouseDownColor: GLOBAL.vocabMouseDownColor });
-                        
-                        //Scroll the view to the word
-                        var nHandler = findNodeHandle(this.refs.mainPanel);
-                        this.refs['word_' + id].measureLayout(nHandler, (x, y, width, height) => {
-                            this.refs.mainPanel.scrollTo({ y: y - (st.height * 0.2) + height + 20 });
-
-                             //Open the modal
-                            if (modalQuestion.TYPE == 'DRAGWORD')
-                            {
-                                let newArr = modalQuestion.ANSWERS.slice();
-                                newArr = EXTRA.shuffle(newArr);
-                                this.refs.qModal.open(true, newArr);
-                            }
-                            else this.refs.qModal.open(false);
-
-                            setTimeout(() => this.refs['word_' + id].measureInWindow((xWindow) => {
-                                this.setState({ triangleStyle: { left: xWindow + (width / 2) } })    
-                            }), 100)
-                            //Set position for the triangle
-                            
-                        });
-
-                     }}
-
+                    onPress={() => this.onWordPress(id, type, code)}
                     style={{ backgroundColor: bColor, borderRadius: 5, marginTop: 2, marginBottom: 2 }}
                     underlayColor={uColor}>
 
@@ -340,6 +424,7 @@ export default class pandora extends Component
                 {/* Main content */}
                 <ScrollView
                     ref='mainPanel'
+                    onContentSizeChange={(contentWidth, contentHeight) => { scrollHeight = contentHeight; this.scrollHeight = contentHeight }}
                     onScroll={this.onScroll.bind(this)}
                     style={{ flex: 1 }} 
                     scrollEventThrottle={1}
@@ -454,7 +539,10 @@ export default class pandora extends Component
                             </View>
 
                             {/* Share button */}
-                            <TouchableOpacity style={{ position: 'absolute', top: 10, right: 40 }}>
+                            <TouchableOpacity 
+                                style={{ position: 'absolute', top: 10, right: 40 }}
+                                onPress={() => this.refs.sModal.open()}>
+
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <Image
                                         source={require('./images/button_share.png')}
@@ -468,20 +556,16 @@ export default class pandora extends Component
                         </View>
                     </View>
 
+                    {/* Space View */}
+                    <View style={{ width: st.width, height: this.state.spaceViewHeight }} />
+
                 </ScrollView>
 
                 { this.renderTopPanel() }
 
                 <QuestionModal ref='qModal'/>
 
-                {/* Triangle */}
-                <Triangle
-                    width={20}
-                    height={20}
-                    color={'#F5F5F5'}
-                    direction={'up'}
-                    style={[this.state.triangleStyle, { position: 'absolute', top: st.height * 0.2 - 20, borderWidth: 2, borderColor: 'black' }]}
-                />
+                <ShareModal ref='sModal'/>
             </View>
         );
     }

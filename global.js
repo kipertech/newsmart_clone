@@ -120,7 +120,8 @@ module.exports = {
             INFORM: `You "influence" (= have an effect on) how people behave and think.`,
 
             USER_ANSWERS: -1,
-            ANSWERED_DATE: null
+            ANSWERED_DATE: null,
+            EARNED_POINT: -1
         },
         {
             TYPE: 'MULTIPLECHOICE',
@@ -142,7 +143,8 @@ module.exports = {
             INFORM: `Social media is a group of Internet-based...`,
 
             USER_ANSWERS: [1],
-            ANSWERED_DATE: '09/11/2016'
+            ANSWERED_DATE: '09/11/2016',
+            EARNED_POINT: 0
         },
         {
             TYPE: 'MULTIPLECHOICE',
@@ -162,7 +164,8 @@ module.exports = {
             INFORM: `A demise is when someone dies or a business stops operating.`,
 
             USER_ANSWERS: [],
-            ANSWERED_DATE: null
+            ANSWERED_DATE: null,
+            EARNED_POINT: -1
         },
         {
             TYPE: 'MULTIPLECHOICE',
@@ -175,14 +178,15 @@ module.exports = {
             [
                 "make a profit",
                 "report a profit",
-                "earn a profit",
+                "share a profit",
                 "earn a profit",
             ],
             CORRECT_ANS: [1, 4],
             INFORM: `"Turn a profit" means the same thing as make or earn a profit. They are all common collocations – words that are often used with the word "profit." \n "Report a profit" and "post a profit" both mean to officially say that you have made a profit.`,
 
             USER_ANSWERS: [1, 4],
-            ANSWERED_DATE: '09/11/2016'
+            ANSWERED_DATE: '09/11/2016',
+            EARNED_POINT: 2
         },
         {
             TYPE: 'SINGLECHOICE',
@@ -203,7 +207,8 @@ module.exports = {
             INFORM: `"App" is short for "application" or "application program," meaning a computer program that is designed for a particular purpose. App stores sell software and digital goods such as music, but do not usually sell hardware such as cameras.`,
 
             USER_ANSWERS: 2,
-            ANSWERED_DATE: '09/11/2016'
+            ANSWERED_DATE: '09/11/2016',
+            EARNED_POINT: 3
         },
         {
             TYPE: 'SINGLECHOICE',
@@ -221,7 +226,8 @@ module.exports = {
             INFORM: `The answer is "False." In fact, a meme is an idea, behavior, or style that spreads from person to person within a particular culture.`,
 
             USER_ANSWERS: -1,
-            ANSWERED_DATE: null
+            ANSWERED_DATE: null,
+            EARNED_POINT: -1
         },
         {
             TYPE: 'DRAGWORD',
@@ -258,8 +264,9 @@ module.exports = {
             ],
             INFORM: `Notice how the adverb "quickly" describes the verb "rise," and the adverb "extremely" shows us how quickly the prices rose.`,
 
-            USER_ANSWERS: [],
-            ANSWERED_DATE: null
+            USER_ANSWERS: [1, 2, 0, 3, 4, 5],
+            ANSWERED_DATE: null,
+            EARNED_POINT: 0
         },
     ]
 }

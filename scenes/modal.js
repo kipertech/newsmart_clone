@@ -19,6 +19,7 @@ import CheckBox from 'react-native-check-box';
 import DragButton from '../components/dragButton';
 import SortableListView from 'react-native-sortable-listview';
 import SortableList from 'react-native-sortable-list';
+import Triangle from '../components/Triangle';
 GLOBAL = require('../global');
 EXTRA = require('../components/extra_functions')
 
@@ -32,10 +33,25 @@ export default class QuestionModal extends Component {
         super(props);
         this.state = {
             curQuestion: Object,
+            wordID: 0,
 
             //Settings
             questionColor: GLOBAL.vocabColor,
             mouseDownColor: GLOBAL.vocabMouseDownColor,
+
+            //Triangle
+            triangleStyle: { top: -20, left: -20 },
+
+            //Inform text
+            informText: '',
+
+            //Title area settings
+            generalColor: 'white',
+            titleColor: GLOBAL.vocabColor,
+            pointColor: 'white',
+            pointText: 'points earned',
+            checkText: 'NEXT',
+            checkBorderWidth: 5,
         }
     }
 
@@ -107,6 +123,18 @@ export default class QuestionModal extends Component {
     //DRAGWORD - Map All
     renderDragQuestion()
     {
+        const arr = this.state.curQuestion.USER_ANSWERS, arrCorrect = this.state.curQuestion.ANSWERS;
+        if (arr.length != 0)
+        {
+            obj = {};
+            curArray = [];
+            for (var i = 0; i < arr.length; ++i)
+            {
+                obj[i] = { KEY: arrCorrect[arr[i]].KEY, WORD: arrCorrect[arr[i]].WORD }
+            }
+        }
+        else obj = {};
+
         return(
             <ScrollView contentContainerStyle={{ padding: 15 }} style={{ height: st.height * 0.8 - 130, width: st.width }}>
                 <SortableListView
@@ -119,6 +147,8 @@ export default class QuestionModal extends Component {
                 <View style={{ width: st.width, backgroundColor: 'transparent', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', marginTop: 5, marginLeft: -2 }}>
                     { curArray.map((value) => this.renderSingleDragWord(value)) }
                 </View>
+
+                {this.renderInformText()}
             </ScrollView>
         )
     }
@@ -136,7 +166,7 @@ export default class QuestionModal extends Component {
                     else
                         selectedMulti.splice(index, 1)
                 }}
-                isChecked={false}
+                isChecked={this.state.curQuestion.USER_ANSWERS.indexOf(i + 1) > -1}
                 rightText={title}
                 textSize={16}
             />
@@ -153,6 +183,8 @@ export default class QuestionModal extends Component {
                 <Radio onSelect={this.onSelect.bind(this)}>
                     { this.state.curQuestion.ANSWERS.map((value, index) => this.renderMultiChoiceCheckbox(value, index)) }
                 </Radio>
+
+                {this.renderInformText()}
             </ScrollView>
         )
     }
@@ -180,9 +212,11 @@ export default class QuestionModal extends Component {
             <ScrollView contentContainerStyle={{ padding: 15 }} style={{ height: st.height * 0.8 - 130 }}>
                 <Text style={{ fontSize: 18 }}>{this.state.curQuestion.QUESTION}</Text>
 
-                <Radio onSelect={this.onSelect.bind(this)}>
+                <Radio onSelect={this.onSelect.bind(this)} defaultSelect={this.state.curQuestion.USER_ANSWERS - 1}>
                     { this.state.curQuestion.ANSWERS.map((value, index) => this.renderSingleChoiceRadio(value, index)) }
                 </Radio>
+
+                {this.renderInformText()}
             </ScrollView>
         )
     }
@@ -190,70 +224,99 @@ export default class QuestionModal extends Component {
     //onClick event for check button
     onCheck()
     {
-        if (this.state.curQuestion.TYPE == 'SINGLECHOICE')
+        if (this.state.checkText == 'CHECK')
         {
-            if (selectedRadio == this.state.curQuestion.CORRECT_ANS)
+            if (this.state.curQuestion.TYPE == 'SINGLECHOICE')
             {
-                alert('Corrected!');
+                if (selectedRadio == this.state.curQuestion.CORRECT_ANS)
+                {
+                    alert('Corrected!');
+                }
+                else
+                {
+                    alert('Wrong!');
+                }
             }
-            else
+            else if (this.state.curQuestion.TYPE == 'MULTIPLECHOICE')
             {
-                alert('Wrong!');
+                if (EXTRA.compareArrays(selectedMulti, this.state.curQuestion.CORRECT_ANS))
+                {
+                    alert('Corrected!');
+                }
+                else
+                {
+                    alert('Wrong!');
+                }
+            }
+            else if (this.state.curQuestion.TYPE == 'DRAGWORD')
+            {
+                let check = true;
+                Object.keys(obj).forEach((data) => {
+                    if (obj[data].WORD != this.state.curQuestion.ANSWERS[data].WORD)
+                        check = false;
+                })
+                //
+                if (check)
+                {
+                    alert('Corrected!');
+                }
+                else
+                {
+                    alert('Wrong!');
+                }
+            }
+            else Alert.alert('Pandora Enki', 'Unsupported question type, please contact the developer for more information');
+        }
+        else
+        {
+            var item = {};
+            const arr = GLOBAL.ARTICLE.WORDS_DATA;
+            for (var i = 0; i < arr.length; ++i)
+            {
+                if (arr[i].POS == this.state.wordID)
+                {
+                    if (i >= arr.length - 1)
+                        GLOBAL.ARTICLESCENE.setState({ spaceViewHeight: 0 }, () => {
+                            this.refs.mainModal.close()
+                        })
+                    else
+                    {
+                        this.refs.mainModal.close();
+                        setTimeout(
+                            () => GLOBAL.ARTICLESCENE.onWordPress(arr[i + 1].POS, arr[i + 1].TYPE, arr[i + 1].QUESTIONCODE)
+                        , 100);
+                    };
+                    break;   
+                }
             }
         }
-        else if (this.state.curQuestion.TYPE == 'MULTIPLECHOICE')
-        {
-            if (EXTRA.compareArrays(selectedMulti, this.state.curQuestion.CORRECT_ANS))
-            {
-                alert('Corrected!');
-            }
-            else
-            {
-                alert('Wrong!');
-            }
-        }
-        else if (this.state.curQuestion.TYPE == 'DRAGWORD')
-        {
-            let check = true;
-            Object.keys(obj).forEach((data) => {
-                if (obj[data].WORD != this.state.curQuestion.ANSWERS[data].WORD)
-                    check = false;
-            })
-            //
-            if (check)
-            {
-                alert('Corrected!');
-            }
-            else
-            {
-                alert('Wrong!');
-            }
-        }
-        else Alert.alert('Pandora Enki', 'Unsupported question type, please contact the developer for more information')
     }
 
-    //Main render function
-    render()
+    //Scroll back to main article
+    scrollBack()
     {
-        return (
-            <Modal {...this.props}
-                style={{ height: st.height * 0.8, width: st.width, backgroundColor: '#F5F5F5' }}
-                position={'bottom'} ref={'mainModal'} backButtonClose={true}
-                backdropOpacity={0.7}
-                backdropPressToClose={false}
-                animationDuration={200}
-                >
+        if (GLOBAL.ARTICLESCENE.overScroll)
+            GLOBAL.ARTICLESCENE.refs['mainPanel'].scrollTo({ y: GLOBAL.ARTICLESCENE.scrollHeight })
+    }
 
-                {/* Title */}
-                <View style={{ flexDirection: 'row', height: 50, width: st.width, alignItems: 'center', padding: 15 }}>
+    //Render the inform text after user has answered
+    renderInformText()
+    {
+        if (this.state.informText != '')
+            return(
+                <View style={{ padding: 15, backgroundColor: 'white', borderRadius: 4, marginTop: 15 }}>
+                    <Text>{this.state.informText}</Text>
+                </View>
+            )
+        else return(<View/>)
+    }
 
-                    {/* Point */}
-                    <View style={[styles.pointContainer, {borderColor: this.state.questionColor}]}>
-                        <Text>{this.state.curQuestion.POINT}</Text>
-                    </View>
-
-                    <Text style={{color: this.state.questionColor, marginLeft: 5, marginBottom: 3}}>points</Text>
-
+    //Render divider and requirement text
+    renderRequirement()
+    {
+        if (this.state.informText == '')
+            return(
+                <View style={{ flexDirection: 'row', height: 50, alignItems: 'center' }}>
                     {/* Vertical divider */}
                     <View style={{ width: 1, height: 40, backgroundColor: 'gray', opacity: 0.2, marginLeft: 10 }} />
 
@@ -261,38 +324,105 @@ export default class QuestionModal extends Component {
                     <Text style={{color: 'black', marginLeft: 10, marginBottom: 5, marginTop: 5, width: st.width - 150}}>
                         {this.state.curQuestion.REQUIREMENT}
                     </Text>
+                </View>
+            )
+        else return(<View/>);
+    }
 
-                    {/* Close button */}
-                    <TouchableOpacity
-                        onPress={() => {
-                            GLOBAL.ARTICLESCENE.setState({ triangleStyle: { top: -20, left: -20 } }, () => this.refs.mainModal.close());
-                            
-                        }}
-                        style={{ width: 50, height: 50, position: 'absolute', top: 0, right: 0, alignItems: 'center', justifyContent: 'center' }}>
-                        <Image
-                            source={require('../images/button_close_black.png')}
-                            style={{ width: 15, height: 15, opacity: 0.2 }}
-                            resizeMode='stretch'
-                        />
-                    </TouchableOpacity>
+    //Render disabled view
+    renderDisabledView()
+    {
+        if (this.state.informText == '')
+            return(<View/>)
+        else
+        {
+            return(
+                <View style={{ 
+                    position: 'absolute', top: 0, 
+                    height: st * 0.8 - 20 - 50 - 90, width: st.width, 
+                    backgroundColor: 'transparent' }}
+                />
+            )   
+        }
+    }
+
+    //Main render function
+    render()
+    {
+        return (
+            <Modal {...this.props}
+                style={{ height: st.height * 0.8 + 20, width: st.width, backgroundColor: 'transparent' }}
+                position={'bottom'} ref={'mainModal'} backButtonClose={true}
+                backdropOpacity={0.7}
+                backdropPressToClose={false}
+                animationDuration={200}
+                onClosed={this.scrollBack.bind(this)}
+                >
+
+                {/* Triangle */}
+                <Triangle
+                    width={20}
+                    height={20}
+                    color={this.state.titleColor}
+                    direction={'up'}
+                    style={[this.state.triangleStyle]}
+                />
+
+                {/* Wrap view */}
+                <View style={{ height: st.height * 0.8, width: st.width, backgroundColor: '#F5F5F5' }}>
+                    {/* Title */}
+                    <View style={{ flexDirection: 'row', height: 50, width: st.width, alignItems: 'center', padding: 15, backgroundColor: this.state.titleColor }}>
+
+                        {/* Point */}
+                        <View style={[styles.pointContainer, {borderColor: this.state.generalColor}]}>
+                            <Text style={{ color: this.state.pointColor }}>{this.state.curQuestion.POINT}</Text>
+                        </View>
+
+                        <Text style={{color: this.state.generalColor, marginLeft: 5, marginBottom: 3}}>{this.state.pointText}</Text>
+
+                        { this.renderRequirement() }
+
+                        {/* Close button */}
+                        <TouchableOpacity
+                            onPress={() => {
+                                GLOBAL.ARTICLESCENE.setState({ spaceViewHeight: 0 }, () => {
+                                    this.refs.mainModal.close()
+                                });
+                            }}
+                            style={{ width: 50, height: 50, position: 'absolute', top: 0, right: 0, alignItems: 'center', justifyContent: 'center' }}>
+                            <Image
+                                source={require('../images/button_close_black.png')}
+                                style={{ width: 15, height: 15, opacity: 0.2 }}
+                                resizeMode='stretch'
+                            />
+                        </TouchableOpacity>
+                    </View>
+
+                    {/* Divider */}
+                    <View style={{ width: st.width, height: 1, backgroundColor: 'gray', opacity: 0.2 }} />
+
+                    { this.pickRender() }
+
+                    {/* Check Button */}
+                    <View style={{ 
+                        flexDirection: 'row', height: 80, width: st.width, 
+                        backgroundColor: this.state.questionColor, alignItems: 'center', justifyContent: 'center', 
+                        }}>
+
+                        <TouchableHighlight 
+                            underlayColor={this.state.mouseDownColor} 
+                            onPress={() =>  this.onCheck()} 
+                            style={{ 
+                                backgroundColor: this.state.titleColor, borderRadius: 4, width: st.width - 30, height: 50, 
+                                alignItems: 'center', justifyContent: 'center',
+                                borderWidth: this.state.checkBorderWidth, borderColor: 'white' }}>
+
+                            <Text style={{ color: this.state.generalColor }}>{this.state.checkText}</Text>
+
+                        </TouchableHighlight>
+                    </View>
                 </View>
 
-                {/* Divider */}
-                <View style={{ width: st.width, height: 1, backgroundColor: 'gray', opacity: 0.2 }} />
-
-                { this.pickRender() }
-
-                {/* Check Button */}
-                <View style={{ flexDirection: 'row', height: 80, width: st.width, backgroundColor: this.state.questionColor, alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableHighlight 
-                        underlayColor={this.state.mouseDownColor} 
-                        onPress={() =>  this.onCheck()} 
-                        style={{ backgroundColor: 'white', borderRadius: 4, width: st.width - 30, height: 50, alignItems: 'center', justifyContent: 'center' }}>
-
-                        <Text style={{ color: this.state.questionColor }}>CHECK</Text>
-
-                    </TouchableHighlight>
-                </View>
             </Modal>
         );
     }
