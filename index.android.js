@@ -24,7 +24,7 @@ let st = Dimensions.get('window');
 const wordsToHighlight = GLOBAL.ARTICLE.WORDS_DATA;
 var ignoreList = [];
 var offset = 0, currentOffset = 0;
-var totalVocabPoint = 0, totalGrammarPoint = 0;
+var totalVocabPoint = 0, totalGrammarPoint = 0, totalEarnedVocabPoint = 0, totalEarnedGrammarPoint;
 var scrollHeight = 0;
 /* --- */
 
@@ -67,12 +67,21 @@ export default class pandora extends Component
     {
         totalVocabPoint = 0;
         totalGrammarPoint = 0;
+        totalEarnedVocabPoint = 0;
+        totalEarnedGrammarPoint = 0;
         for (var i = 0; i < GLOBAL.QUESTION_DATA.length; ++i)
         {
             if (GLOBAL.QUESTION_DATA[i].TYPE_QUESTION == 'VOCAB')
+            {
                 totalVocabPoint = totalVocabPoint + GLOBAL.QUESTION_DATA[i].POINT;
+                totalEarnedVocabPoint = totalEarnedVocabPoint + GLOBAL.QUESTION_DATA[i].POINTS_EARNED;
+            }
             else if (GLOBAL.QUESTION_DATA[i].TYPE_QUESTION == 'GRAMMAR')
+            {
                 totalGrammarPoint = totalGrammarPoint + GLOBAL.QUESTION_DATA[i].POINT;
+                totalEarnedGrammarPoint = totalEarnedGrammarPoint + GLOBAL.QUESTION_DATA[i].POINTS_EARNED;
+            }
+                
         }
     }
 
@@ -165,7 +174,7 @@ export default class pandora extends Component
                     else if (modalQuestion.TYPE == 'DRAGWORD')
                     {
                         let checkArr = true;
-                        for (var i = 1; i < modalQuestion.USER_ANSWERS.length; ++i)
+                        for (var i = 0; i < modalQuestion.USER_ANSWERS.length; ++i)
                         {
                             if (modalQuestion.USER_ANSWERS[i] < modalQuestion.USER_ANSWERS[i - 1])
                             {
@@ -306,7 +315,7 @@ export default class pandora extends Component
             return(
                 <View style={{ flexDirection: 'row', position: 'absolute', left: 0, bottom: 0 }}>
                     <Progress.Bar 
-                        progress={GLOBAL.ARTICLE.CURVOCABPOINT / totalVocabPoint} 
+                        progress={totalEarnedVocabPoint / totalVocabPoint} 
                         width={st.width / 2} height={5}
                         borderRadius={0}
                         borderWidth={0}
@@ -315,7 +324,7 @@ export default class pandora extends Component
                     </Progress.Bar>
 
                     <Progress.Bar 
-                        progress={GLOBAL.ARTICLE.CURGRAMMARPOINT / totalGrammarPoint}
+                        progress={totalEarnedGrammarPoint / totalGrammarPoint}
                         width={st.width / 2} height={5}
                         borderRadius={0}
                         borderWidth={0}
@@ -451,7 +460,7 @@ export default class pandora extends Component
                         {/* Point progress */}
                         <View style={{ width: st.width, flexDirection: 'row' }}>
                             <Progress.Bar 
-                                progress={GLOBAL.ARTICLE.CURVOCABPOINT / totalVocabPoint} 
+                                progress={totalEarnedVocabPoint / totalVocabPoint} 
                                 width={st.width / 2} height={40}
                                 borderRadius={0}
                                 borderWidth={0}
@@ -459,7 +468,7 @@ export default class pandora extends Component
                                 unfilledColor={GLOBAL.vocabPointUnderColor}>
                                 
                                 <Text style={{ color: 'white', marginLeft: 15 }}>
-                                    {GLOBAL.ARTICLE.CURVOCABPOINT}/{totalVocabPoint} 
+                                    {totalEarnedVocabPoint}/{totalVocabPoint} 
                                     <Text style={{ fontWeight: 'bold' }}>
                                         {' '}Vocab
                                     </Text>
@@ -467,7 +476,7 @@ export default class pandora extends Component
                             </Progress.Bar>
 
                             <Progress.Bar 
-                                progress={GLOBAL.ARTICLE.CURGRAMMARPOINT / totalGrammarPoint}
+                                progress={totalEarnedGrammarPoint / totalGrammarPoint}
                                 width={st.width / 2} height={40}
                                 borderRadius={0}
                                 borderWidth={0}
@@ -475,7 +484,7 @@ export default class pandora extends Component
                                 unfilledColor={GLOBAL.grammarPointUnderColor}>
 
                                 <Text style={{ color: 'white', marginLeft: 15 }}>
-                                    {GLOBAL.ARTICLE.CURGRAMMARPOINT}/{totalGrammarPoint}
+                                    {totalEarnedGrammarPoint}/{totalGrammarPoint}
                                     <Text style={{ fontWeight: 'bold' }}>
                                         {' '}Grammar
                                     </Text>

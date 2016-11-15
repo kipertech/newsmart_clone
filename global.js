@@ -39,9 +39,6 @@ module.exports = {
 
         STARRED: false,
 
-        CURVOCABPOINT: 0,
-        CURGRAMMARPOINT: 0,
-
         WORDS_DATA:
         [
             {
@@ -97,7 +94,7 @@ module.exports = {
                 POS: 511,
                 COUNT: 1,
                 TYPE: 'GRAMMAR',
-                QUESTIONCODE: 'D1'
+                QUESTIONCODE: 'D2'
             },
         ],
     },
@@ -121,7 +118,7 @@ module.exports = {
 
             USER_ANSWERS: -1,
             ANSWERED_DATE: null,
-            POINTS_EARNED: -1
+            POINTS_EARNED: 0
         },
         {
             TYPE: 'MULTIPLECHOICE',
@@ -165,7 +162,7 @@ module.exports = {
 
             USER_ANSWERS: [],
             ANSWERED_DATE: null,
-            POINTS_EARNED: -1
+            POINTS_EARNED: 0
         },
         {
             TYPE: 'MULTIPLECHOICE',
@@ -227,7 +224,7 @@ module.exports = {
 
             USER_ANSWERS: -1,
             ANSWERED_DATE: null,
-            POINTS_EARNED: -1
+            POINTS_EARNED: 0
         },
         {
             TYPE: 'DRAGWORD',
@@ -266,6 +263,45 @@ module.exports = {
 
             USER_ANSWERS: [],
             ANSWERED_DATE: null,
+            POINTS_EARNED: 0
+        },
+        {
+            TYPE: 'DRAGWORD',
+            TYPE_QUESTION: 'GRAMMAR',
+            CODE: 'D2',
+            POINT: 5,
+            REQUIREMENT: 'Tap the words to put them into the box, then drag them into the correct order.',
+            ANSWERS:
+            [
+                {
+                    KEY: 1,
+                    WORD: "Sometimes"
+                },
+                {
+                    KEY: 2,
+                    WORD: "it"
+                },
+                {
+                    KEY: 3,
+                    WORD: "takes"
+                },
+                {
+                    KEY: 4,
+                    WORD: "us"
+                },
+                {
+                    KEY: 5,
+                    WORD: "no"
+                },
+                {
+                    KEY: 6,
+                    WORD: "time."
+                }
+            ],
+            INFORM: `The correct answer is "Sometimes it takes us no time.".`,
+
+            USER_ANSWERS: [2, 1, 3, 5, 6, 4],
+            ANSWERED_DATE: 'Today',
             POINTS_EARNED: 0
         },
     ]

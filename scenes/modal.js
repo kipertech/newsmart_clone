@@ -79,10 +79,20 @@ export default class QuestionModal extends Component {
     open(isDrag, dragArray)
     {
         if (isDrag)
+        {
+            obj = {}
             curArray = dragArray;
 
+            //Load user question data
+            this.state.curQuestion.USER_ANSWERS.forEach((value) => {
+                this.state.curQuestion.ANSWERS.forEach((value2) => {
+                    if (value2.KEY == value)
+                        obj[`${EXTRA.getObjSize(obj) + 1}`] = { KEY: value, WORD: value2.WORD };
+                });
+            });
+        }
+
         //Reset all data
-        obj = {};
         selectedMulti = [];
         selectedRadio = -1;
 
@@ -120,6 +130,10 @@ export default class QuestionModal extends Component {
 
     onRemove(value)
     {
+        if (this.state.informText != '')
+            return;
+
+        //Push word out of the box
         var checkArr = Object.keys(obj);
         checkArr.forEach(data => {
             if (obj[data].KEY == value.KEY)
@@ -142,24 +156,15 @@ export default class QuestionModal extends Component {
     //DRAGWORD - Map All
     renderDragQuestion()
     {
-        /* UNKNOWN CODE */
-        const arr = this.state.curQuestion.USER_ANSWERS, arrCorrect = this.state.curQuestion.ANSWERS;
-        if (arr.length != 0)
-        {
-            obj = {};
-            curArray = [];
-            for (var i = 0; i < arr.length; ++i)
-            {
-                obj[i] = { KEY: arrCorrect[arr[i]].KEY, WORD: arrCorrect[arr[i]].WORD }
-            }
-        }
-        else obj = {};
+        //Stop render the original words if done already
+        if (this.state.informText != '')
+            curArray.splice(0, curArray.length);
 
         return(
             <ScrollView contentContainerStyle={{ padding: 15 }} style={{ height: st.height * 0.8 - 130, width: st.width }}>
                 <SortableListView
-                    style={{ width: st.width, height: 150, backgroundColor: 'rgb(142, 147, 148)' }}
-                    contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', padding: 5 }}
+                    style={{ width: st.width, height: 150, backgroundColor: 'rgb(142, 147, 148)', borderRadius: 4 }}
+                    contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', padding: 5, width: st.width - 40 }}
                     data={obj}
                     renderRow={(data) => <DragButton key={data.KEY} content={data.WORD} onClick={() => this.onRemove(data)}/>}
                 />
@@ -189,6 +194,7 @@ export default class QuestionModal extends Component {
                 isChecked={this.state.curQuestion.USER_ANSWERS.indexOf(i + 1) > -1}
                 rightText={title}
                 textSize={16}
+                disabled={this.state.informText != ''}
             />
         )
     }
@@ -232,7 +238,11 @@ export default class QuestionModal extends Component {
             <ScrollView contentContainerStyle={{ padding: 15 }} style={{ height: st.height * 0.8 - 130 }}>
                 <Text style={{ fontSize: 18 }}>{this.state.curQuestion.QUESTION}</Text>
 
-                <Radio onSelect={this.onSelect.bind(this)} defaultSelect={this.state.curQuestion.USER_ANSWERS - 1}>
+                <Radio 
+                    onSelect={this.onSelect.bind(this)} 
+                    defaultSelect={this.state.curQuestion.USER_ANSWERS - 1}
+                    disabled={this.state.informText != ''}
+                    >
                     { this.state.curQuestion.ANSWERS.map((value, index) => this.renderSingleChoiceRadio(value, index)) }
                 </Radio>
 
@@ -310,23 +320,37 @@ export default class QuestionModal extends Component {
                 GLOBAL.QUESTION_DATA.forEach((value, index) => {
                     if (value.CODE == this.state.curQuestion.CODE)
                     {
+                        //Check if user has finished the question
+                        if (Object.keys(obj).length != this.state.curQuestion.ANSWERS.length)
+                        {
+                            alert('Plese finish the question by putting all the words into the box!');
+                            return;
+                        };
+
+                        //Check if the words are in correct order
                         var check = true;
                         Object.keys(obj).forEach((data) => {
-                            if (obj[data].WORD != this.state.curQuestion.ANSWERS[data].WORD)
+                            if (obj[data].WORD != this.state.curQuestion.ANSWERS[data - 1].WORD)
                                 check = false;
-                        })
+                        });
 
                         //Save to data
-                        value.USER_ANSWERS = Object.keys(obj).slice();
-                        console.log(Object.keys(obj), value.USER_ANSWERS);
+                        var tempArr = [];
+                        Object.keys(obj).forEach((data) => tempArr.push(obj[data].KEY) );
+                        value.USER_ANSWERS = tempArr.slice();
                         value.ANSWERED_DATE = new Date();
 
                         //Set render
                         this.informUser(check);
+                        value.POINTS_EARNED = (check) ? value.POINT : 0;
                     }
                 })      
             }
             else Alert.alert('Pandora Enki', 'Unsupported question type, please contact the developer for more information');
+
+            //Update points on article scene
+            GLOBAL.ARTICLESCENE.calculatePoints();
+            GLOBAL.ARTICLESCENE.forceUpdate();
         }
         else
         {
