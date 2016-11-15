@@ -57,7 +57,24 @@ export default class QuestionModal extends Component {
 
     componentWillMount() {
         GLOBAL.ARTICLEMODAL = this;
-    }
+    };
+
+    informUser(isCorrect)
+    {
+        if (isCorrect)
+            this.setState({ informText: 'Correct! ' + this.state.curQuestion.INFORM })
+        else this.setState({ informText: 'Incorrect answer. ' + this.state.curQuestion.INFORM })
+        
+        //Set colors
+        this.setState({
+            generalColor: 'white',
+            pointColor: 'white',
+            titleColor: this.state.questionColor,
+            pointText: 'points earned',
+            checkText: 'NEXT',
+            checkBorderWidth: 2
+        })
+    };
 
     open(isDrag, dragArray)
     {
@@ -87,7 +104,9 @@ export default class QuestionModal extends Component {
     onAdd(value)
     {
         //Add new item to the current object
-        obj[`${EXTRA.getObjSize(obj)}`] = { KEY: value.KEY, WORD: value.WORD };
+        obj[`${EXTRA.getObjSize(obj) + 1}`] = { KEY: value.KEY, WORD: value.WORD };
+
+        console.log(obj);
 
         //Force re-render
         this.forceUpdate();
@@ -123,6 +142,7 @@ export default class QuestionModal extends Component {
     //DRAGWORD - Map All
     renderDragQuestion()
     {
+        /* UNKNOWN CODE */
         const arr = this.state.curQuestion.USER_ANSWERS, arrCorrect = this.state.curQuestion.ANSWERS;
         if (arr.length != 0)
         {
@@ -228,42 +248,83 @@ export default class QuestionModal extends Component {
         {
             if (this.state.curQuestion.TYPE == 'SINGLECHOICE')
             {
-                if (selectedRadio == this.state.curQuestion.CORRECT_ANS)
-                {
-                    alert('Corrected!');
-                }
-                else
-                {
-                    alert('Wrong!');
-                }
+                GLOBAL.QUESTION_DATA.forEach((value, index) => {
+                    if (value.CODE == this.state.curQuestion.CODE)
+                    {
+                        //Save to data
+                        value.USER_ANSWERS = selectedRadio;
+                        value.ANSWERED_DATE = new Date();
+
+                        //Update render
+                        if (selectedRadio == value.CORRECT_ANS)
+                        {
+                            this.informUser(true)
+                            value.POINTS_EARNED = value.POINT;
+                        }
+                        else
+                        {
+                            this.informUser(false);
+                            value.POINTS_EARNED = 0;
+                        }
+                    }
+                })
             }
             else if (this.state.curQuestion.TYPE == 'MULTIPLECHOICE')
             {
-                if (EXTRA.compareArrays(selectedMulti, this.state.curQuestion.CORRECT_ANS))
-                {
-                    alert('Corrected!');
-                }
-                else
-                {
-                    alert('Wrong!');
-                }
+                GLOBAL.QUESTION_DATA.forEach((value, index) => {
+                    if (value.CODE == this.state.curQuestion.CODE)
+                    {
+                        //Save to data
+                        value.USER_ANSWERS = selectedMulti.slice();
+                        value.ANSWERED_DATE = new Date();
+
+                        //Update render
+                        if (EXTRA.compareArrays(selectedMulti, this.state.curQuestion.CORRECT_ANS))
+                        {
+                            this.informUser(true)
+                            value.POINTS_EARNED = value.POINT;
+                        }
+                        else
+                        {
+                            this.informUser(false);
+
+                            //Calculate total corrected answers
+                            var total = 0;
+                            selectedMulti.forEach((v1) => {
+                                value.CORRECT_ANS.forEach((v2) => {
+                                    if (v1 == v2)
+                                        ++total;
+                                    else --total;
+                                })
+                            });
+                            
+                            total = (total < 0) ? 0 : total;
+                            //Save point to data
+                            value.POINTS_EARNED = Math.round(value.POINT * (total / value.CORRECT_ANS.length));
+                        }
+                    }
+                })
             }
             else if (this.state.curQuestion.TYPE == 'DRAGWORD')
             {
-                let check = true;
-                Object.keys(obj).forEach((data) => {
-                    if (obj[data].WORD != this.state.curQuestion.ANSWERS[data].WORD)
-                        check = false;
-                })
-                //
-                if (check)
-                {
-                    alert('Corrected!');
-                }
-                else
-                {
-                    alert('Wrong!');
-                }
+                GLOBAL.QUESTION_DATA.forEach((value, index) => {
+                    if (value.CODE == this.state.curQuestion.CODE)
+                    {
+                        var check = true;
+                        Object.keys(obj).forEach((data) => {
+                            if (obj[data].WORD != this.state.curQuestion.ANSWERS[data].WORD)
+                                check = false;
+                        })
+
+                        //Save to data
+                        value.USER_ANSWERS = Object.keys(obj).slice();
+                        console.log(Object.keys(obj), value.USER_ANSWERS);
+                        value.ANSWERED_DATE = new Date();
+
+                        //Set render
+                        this.informUser(check);
+                    }
+                })      
             }
             else Alert.alert('Pandora Enki', 'Unsupported question type, please contact the developer for more information');
         }
@@ -375,7 +436,7 @@ export default class QuestionModal extends Component {
 
                         {/* Point */}
                         <View style={[styles.pointContainer, {borderColor: this.state.generalColor}]}>
-                            <Text style={{ color: this.state.pointColor }}>{this.state.curQuestion.POINT}</Text>
+                            <Text style={{ color: this.state.pointColor }}>{(this.state.informText == '') ? this.state.curQuestion.POINT : this.state.curQuestion.POINTS_EARNED}</Text>
                         </View>
 
                         <Text style={{color: this.state.generalColor, marginLeft: 5, marginBottom: 3}}>{this.state.pointText}</Text>

@@ -121,7 +121,7 @@ module.exports = {
 
             USER_ANSWERS: -1,
             ANSWERED_DATE: null,
-            EARNED_POINT: -1
+            POINTS_EARNED: -1
         },
         {
             TYPE: 'MULTIPLECHOICE',
@@ -142,9 +142,9 @@ module.exports = {
             CORRECT_ANS: [3, 5],
             INFORM: `Social media is a group of Internet-based...`,
 
-            USER_ANSWERS: [1],
-            ANSWERED_DATE: '09/11/2016',
-            EARNED_POINT: 0
+            USER_ANSWERS: [],
+            ANSWERED_DATE: '',
+            POINTS_EARNED: 0
         },
         {
             TYPE: 'MULTIPLECHOICE',
@@ -165,7 +165,7 @@ module.exports = {
 
             USER_ANSWERS: [],
             ANSWERED_DATE: null,
-            EARNED_POINT: -1
+            POINTS_EARNED: -1
         },
         {
             TYPE: 'MULTIPLECHOICE',
@@ -186,7 +186,7 @@ module.exports = {
 
             USER_ANSWERS: [1, 4],
             ANSWERED_DATE: '09/11/2016',
-            EARNED_POINT: 2
+            POINTS_EARNED: 2
         },
         {
             TYPE: 'SINGLECHOICE',
@@ -208,7 +208,7 @@ module.exports = {
 
             USER_ANSWERS: 2,
             ANSWERED_DATE: '09/11/2016',
-            EARNED_POINT: 3
+            POINTS_EARNED: 3
         },
         {
             TYPE: 'SINGLECHOICE',
@@ -227,7 +227,7 @@ module.exports = {
 
             USER_ANSWERS: -1,
             ANSWERED_DATE: null,
-            EARNED_POINT: -1
+            POINTS_EARNED: -1
         },
         {
             TYPE: 'DRAGWORD',
@@ -264,9 +264,9 @@ module.exports = {
             ],
             INFORM: `Notice how the adverb "quickly" describes the verb "rise," and the adverb "extremely" shows us how quickly the prices rose.`,
 
-            USER_ANSWERS: [1, 2, 0, 3, 4, 5],
+            USER_ANSWERS: [],
             ANSWERED_DATE: null,
-            EARNED_POINT: 0
+            POINTS_EARNED: 0
         },
     ]
 }
