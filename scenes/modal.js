@@ -59,6 +59,10 @@ export default class QuestionModal extends Component {
         GLOBAL.ARTICLEMODAL = this;
     };
 
+    componentWillUnmount() {
+        GLOBAL.ARTICLEMODAL = null;
+    };
+
     informUser(isCorrect)
     {
         if (isCorrect)
@@ -355,7 +359,7 @@ export default class QuestionModal extends Component {
         else
         {
             var item = {};
-            const arr = GLOBAL.ARTICLE.WORDS_DATA;
+            const arr = GLOBAL.ARTICLESCENE.props.curArticle.WORDS_DATA;
             for (var i = 0; i < arr.length; ++i)
             {
                 if (arr[i].POS == this.state.wordID)

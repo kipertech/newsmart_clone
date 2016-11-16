@@ -10,7 +10,7 @@ import { Actions, Scene, Router } from 'react-native-router-flux';
 export default class VideoScene extends Component {
   render() {
     return (
-      <View style={styles.container}>
+      <View>
         <Text onPress={ () => Actions.article() }>Article</Text>
       </View>
     );

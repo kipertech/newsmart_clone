@@ -32,7 +32,9 @@ module.exports = {
 
             DESCRIPTION: `Double-click any word to translate`,
 
-            TYPE: 'Tech',
+            TYPE: 'NORMAL',
+
+            CATEGORY: 'Tech',
 
             CONTENT: `Just six months ago, Twitter Inc. called the looping-video app Vine one of its “foundational acquisitions.” On Thursday, the social-media company said it was shutting it down. \n Vine's demise shows how difficult it is for an internet sensation to have staying power and turn profit. \n The app rocketed to the top of the rankings in Apple's app store in early 2013 within weeks of its debut, resonating with young people who were drawn to the short, snappy format. The best of the site's six-second looping videos helped popularize new cultural memes such as “Damn Daniel” and “on fleek.” \n Vine quickly carved a path to fame for a group of artists and creators, some of whom have gone on to launch larger careers as digital influencers. They include King Bach, also known as Andrew Bachelor, who recently signed on for a sitcom in development by 21st Century Fox Inc. Others used their Vine popularity to land product placement and branded content deals. \n But Twitter was never able to fully capitalize on Vine's popularity, and over time the site lost out to competitors like Snap Inc.'s Snapchat, Facebook Inc., Instagram and Alphabet Inc.'s YouTube, The Wall Street Journal reported in May. \n Many top Viners, marketers and ad buyers abandoned the site, frustrated that it never implemented a sustainable advertising model. Dominant creators, such as Viral Nation clients Joey Purpdrank and Max Jr., shifted to making longer videos for YouTube, Facebook and other platforms that drew larger audiences and a chance to make money through advertising. The app was recently ranked 284 among free U.S. apps in the App Store, according to data tracker App Annie. \n “If Vine was housed inside a company that was growing at 30% a year…it would have survived,” said Scott Galloway, founder of consumer-brand research firm L2 Inc. and a marketing professor at New York University. For Twitter, “not growing its user base, a part-time CEO and disgruntled investors—all of that adds up to forced focus.” \n A Twitter spokesman wasn't immediately available for comment. Twitter announced the news on Thursday separate from its third-quarter earnings report, which included shrinking revenue growth and job cuts. \n Vine's co-founders instantly expressed remorse on Thursday. “Don't sell your company!” co-founder Rus Yusupov wrote on Twitter. Another co-founder, Dom Hofmann, wrote: “busting out the bourbon.” Mr. Yusupov left Twitter last year as part of a wave of layoffs. Mr. Hofmann left earlier. \n Some users took to Vine to spin the grim news into gags, with lip-sync tributes and comedic acts. There was also some resentment among users who built large followings, directing their anger at Twitter for failing to capitalize on Vine's former zeitgeist status. \n “Vine messed up — they let their top creators leave the app,” said Jason Nash, a comedian who got his start on Vine three years ago and has 2.7 million followers on the site. Still, Mr. Nash said he was grateful to Vine, which inspired him to create independent film “FML” about two social media celebrities trying to drum up more followers. “Weird how fast technology changes,” Mr. Nash said Thursday. “I guess I have my sequel.”`,
 
@@ -142,6 +144,32 @@ module.exports = {
                     QUESTIONCODE: 'D2'
                 },
             ],
+        },
+
+        {
+            ID: 'VF101',
+
+            TITLE: `Social Media Companies Tackle Fake News and Abuse`,
+
+            ABSTRACT: 'Twitter, Facebook and Google are taking steps to reduce fake news, misinformation, and harassment on the internet after users expressed concerns that false news stories and hate speech fueled divisiveness in the recent presidential election campaign. Photo: Bloomberg News',
+
+            IMAGE: 'http://1u88jj3r4db2x4txp44yqfj1.wpengine.netdna-cdn.com/wp-content/uploads/2014/04/markzuckerberg.jpg',
+
+            LEVEL: 4,
+
+            OBJECTIVE: 'Pandora Level 4 (B2, TOEIC 551–668, TOEFL iBT 53–64, IELTS 5–6)',
+
+            DESCRIPTION: `Double-click any word to translate`,
+
+            TYPE: 'VIDEO',
+
+            CATEGORY: 'Tech',
+
+            DATE: 'November 15, 2016',
+
+            AUTHOR: 'Anonymous',
+
+            STARRED: true,
         }
     ],
 
@@ -464,8 +492,8 @@ module.exports = {
             ],
             INFORM: `The correct answer is "Sometimes it takes us no time.".`,
 
-            USER_ANSWERS: [2, 1, 3, 5, 6, 4],
-            ANSWERED_DATE: 'Today',
+            USER_ANSWERS: [],
+            ANSWERED_DATE: '',
             POINTS_EARNED: 0
         },
     ]

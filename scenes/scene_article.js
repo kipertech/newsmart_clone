@@ -20,9 +20,8 @@ import * as Progress from 'react-native-progress';
 import { Actions, Scene, Router } from 'react-native-router-flux';
 
 /* --- */
-const words = GLOBAL.ARTICLES[0].CONTENT.split(' ');
+let words = [], wordsToHighlight = [];
 let st = Dimensions.get('window');
-const wordsToHighlight = GLOBAL.ARTICLES[0].WORDS_DATA;
 var ignoreList = [];
 var offset = 0, currentOffset = 0;
 var totalVocabPoint = 0, totalGrammarPoint = 0, totalEarnedVocabPoint = 0, totalEarnedGrammarPoint;
@@ -55,12 +54,16 @@ export default class ArticleScene extends Component
     }
 
     componentWillMount() {
+        //Initilize data
         this.calculatePoints();
-        GLOBAL.ARTICLESSCENE = this;
+        GLOBAL.ARTICLESCENE = this;
+
+        words = this.props.curArticle.CONTENT.split(' ');
+        wordsToHighlight = this.props.curArticle.WORDS_DATA;
     }
 
     componentWillUnmount() {
-        GLOBAL.ARTICLESSCENE = null;
+        GLOBAL.ARTICLESCENE = null;
     }
 
     //Calculate total points
@@ -96,14 +99,14 @@ export default class ArticleScene extends Component
             if (value.CODE == code)
             {
                 modalQuestion = value;
-                GLOBAL.ARTICLESMODAL.setState({ curQuestion: value, wordID: id });
+                GLOBAL.ARTICLEMODAL.setState({ curQuestion: value, wordID: id });
             }
         });
 
         //Set the color for the modal
         if (type == 'GRAMMAR')
-            GLOBAL.ARTICLESMODAL.setState({ questionColor: GLOBAL.grammarColor, mouseDownColor: GLOBAL.grammarMouseDownColor })
-        else GLOBAL.ARTICLESMODAL.setState({ questionColor: GLOBAL.vocabColor, mouseDownColor: GLOBAL.vocabMouseDownColor });
+            GLOBAL.ARTICLEMODAL.setState({ questionColor: GLOBAL.grammarColor, mouseDownColor: GLOBAL.grammarMouseDownColor })
+        else GLOBAL.ARTICLEMODAL.setState({ questionColor: GLOBAL.vocabColor, mouseDownColor: GLOBAL.vocabMouseDownColor });
         
         //Scroll the view to the word
         var nHandler = findNodeHandle(this.refs.mainPanel);
@@ -127,20 +130,20 @@ export default class ArticleScene extends Component
 
                 //Set the position for the triangle
                 this.refs['word_' + id].measureInWindow((xWindow) => {
-                    GLOBAL.ARTICLESMODAL.setState({ triangleStyle: { left: xWindow + (width / 2) } })    
+                    GLOBAL.ARTICLEMODAL.setState({ triangleStyle: { left: xWindow + (width / 2) } })    
                 })
 
                 function informUser(isCorrect)
                 {
                     if (isCorrect)
-                        GLOBAL.ARTICLESMODAL.setState({ informText: 'Correct! ' + modalQuestion.INFORM })
-                    else GLOBAL.ARTICLESMODAL.setState({ informText: 'Incorrect answer. ' + modalQuestion.INFORM })
+                        GLOBAL.ARTICLEMODAL.setState({ informText: 'Correct! ' + modalQuestion.INFORM })
+                    else GLOBAL.ARTICLEMODAL.setState({ informText: 'Incorrect answer. ' + modalQuestion.INFORM })
                     
                     //Set colors
-                    GLOBAL.ARTICLESMODAL.setState({
+                    GLOBAL.ARTICLEMODAL.setState({
                         generalColor: 'white',
                         pointColor: 'white',
-                        titleColor: GLOBAL.ARTICLESMODAL.state.questionColor,
+                        titleColor: GLOBAL.ARTICLEMODAL.state.questionColor,
                         pointText: 'points earned',
                         checkText: 'NEXT',
                         checkBorderWidth: 2
@@ -149,9 +152,9 @@ export default class ArticleScene extends Component
                 
                 //Check if the ANSWERED question is correct
                 if (modalQuestion.USER_ANSWERS == -1 || modalQuestion.USER_ANSWERS.length == 0)
-                    GLOBAL.ARTICLESMODAL.setState({ 
+                    GLOBAL.ARTICLEMODAL.setState({ 
                         informText: '',
-                        generalColor: GLOBAL.ARTICLESMODAL.state.questionColor ,
+                        generalColor: GLOBAL.ARTICLEMODAL.state.questionColor ,
                         pointColor: 'black',
                         titleColor: 'white',
                         pointText: 'points',
@@ -298,7 +301,7 @@ export default class ArticleScene extends Component
                     <Text 
                         numberOfLines={1} 
                         style={{ fontSize: 18, color: 'black', fontWeight: 'bold', textAlign: 'center' }}>
-                        {GLOBAL.ARTICLES[0].TITLE}
+                        {this.props.curArticle.TITLE}
                     </Text>
                 </View>
             );
@@ -359,7 +362,7 @@ export default class ArticleScene extends Component
 
                         {/* Star button */}
                         <TouchableOpacity
-                            onPress={() => { GLOBAL.ARTICLES[0].STARRED = !GLOBAL.ARTICLES[0].STARRED; this.onScroll() }}
+                            onPress={() => { this.props.curArticle.STARRED = !this.props.curArticle.STARRED; this.onScroll() }}
                             style={{ width: 50, height: 45, position: 'absolute', top: 0, right: 0, alignItems: 'center', justifyContent: 'center' }}>
                             <Image
                                 source={this.state.starButton}
@@ -405,14 +408,14 @@ export default class ArticleScene extends Component
         if (currentOffset <= (st.width * 0.6 - 45))
         {
             this.setState({ topPanelColor: 'transparent', closeButton: require('../images/button_close_white.png') });
-            if (GLOBAL.ARTICLES[0].STARRED)
+            if (this.props.curArticle.STARRED)
                 this.setState({ starButton: require('../images/button_star_check.png') })
             else this.setState({ starButton: require('../images/button_star_uncheck.png') })
         }
         else
         {
             this.setState({ topPanelColor: 'white', closeButton: require('../images/button_close_orange.png') });
-            if (GLOBAL.ARTICLES[0].STARRED)
+            if (this.props.curArticle.STARRED)
                 this.setState({ starButton: require('../images/button_star_check_orange.png') })
             else this.setState({ starButton: require('../images/button_star_uncheck_orange.png') })
         }
@@ -446,13 +449,13 @@ export default class ArticleScene extends Component
                     <View style={{ backgroundColor: '#F4F4F4' }}>
                         {/* Main Image */}
                         <Image
-                            source={{ uri: GLOBAL.ARTICLES[0].IMAGE }}
+                            source={{ uri: this.props.curArticle.IMAGE }}
                             style={{ width: st.width, height: st.width * 0.6, flexDirection: 'row' }}
                             resizeMode='stretch'>
 
                             <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'black', opacity: 0.2 }}/>
 
-                            <Text style={{ fontWeight: 'bold', fontSize: 25, fontFamily: 'Cochin', color: 'white', alignSelf: 'flex-end', padding: 15 }}>{GLOBAL.ARTICLES[0].TITLE}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 25, fontFamily: 'Cochin', color: 'white', alignSelf: 'flex-end', padding: 15 }}>{this.props.curArticle.TITLE}</Text>
 
                         </Image>
 
@@ -496,8 +499,8 @@ export default class ArticleScene extends Component
                             {/* Objective */}
                             <View style={{ width: st.width - 30 - 50, paddingRight: 5 }}>
                                 <Text style={{ color: 'rgb(142, 147, 148)' }}>LEARNING OBJECTIVE</Text>
-                                <Text style={{ fontWeight: 'bold' }}>{GLOBAL.ARTICLES[0].OBJECTIVE}</Text>
-                                <Text>{GLOBAL.ARTICLES[0].DESCRIPTION}</Text>
+                                <Text style={{ fontWeight: 'bold' }}>{this.props.curArticle.OBJECTIVE}</Text>
+                                <Text>{this.props.curArticle.DESCRIPTION}</Text>
                             </View>
 
                             {/* Level */}
@@ -514,8 +517,8 @@ export default class ArticleScene extends Component
 
                                 <Progress.Circle 
                                     size={40} 
-                                    progress={GLOBAL.ARTICLES[0].LEVEL / 10 * 2}
-                                    contentText={GLOBAL.ARTICLES[0].LEVEL.toString()}
+                                    progress={this.props.curArticle.LEVEL / 10 * 2}
+                                    contentText={this.props.curArticle.LEVEL.toString()}
                                     showContentText={true}
                                     borderWidth={0}
                                     thickness={5}
@@ -530,7 +533,7 @@ export default class ArticleScene extends Component
 
                     <View style={{ margin: 15 }}>
                         {/* Title */}
-                        <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'black', marginBottom: 10 }}>{GLOBAL.ARTICLES[0].TITLE}</Text>
+                        <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'black', marginBottom: 10 }}>{this.props.curArticle.TITLE}</Text>
 
                         {/* Article Content */}
                         <View style={{ flex: 1, flexWrap: 'wrap', flexDirection: 'row', alignItems: 'flex-start' }}>
@@ -542,8 +545,8 @@ export default class ArticleScene extends Component
                         <View style={{ width: st.width, marginTop: 40, flexDirection: 'row', alignItems: 'center' }}>
                             {/* Date and author */}
                             <View>
-                                <Text style={{ color: 'gray' }}>{GLOBAL.ARTICLES[0].DATE}</Text>
-                                <Text style={{ color: 'black', fontWeight: 'bold' }}>by {GLOBAL.ARTICLES[0].AUTHOR}</Text>
+                                <Text style={{ color: 'gray' }}>{this.props.curArticle.DATE}</Text>
+                                <Text style={{ color: 'black', fontWeight: 'bold' }}>by {this.props.curArticle.AUTHOR}</Text>
                             </View>
 
                             {/* Share button */}
