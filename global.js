@@ -31,7 +31,7 @@ module.exports = {
 
         TYPE: 'Tech',
 
-        CONTENT: `Just six months ago, Twitter Inc. called the looping-video app Vine one of its “foundational acquisitions.” On Thursday, the social-media company said it was shutting it down. \n Vine's demise shows how difficult it is for an internet sensation to have staying power and turn profit. \n The app rocketed to the top of the rankings in Apple's app store in early 2013 within weeks of its debut, resonating with young people who were drawn to the short, snappy format. The best of the site's six-second looping videos helped popularize new cultural memes such as “Damn Daniel” and “on fleek.” \n Vine quickly carved a path to fame for a group of artists and creators, some of whom have gone on to launch larger careers as digital influencers. They include King Bach, also known as Andrew Bachelor, who recently signed on for a sitcom in development by 21st Century Fox Inc. Others used their Vine popularity to land product placement and branded content deals. \n But Twitter was never able to fully capitalize on Vine's popularity, and over time the site lost out to competitors like Snap Inc.'s Snapchat, Facebook Inc., Instagram and Alphabet Inc.'s YouTube, The Wall Street Journal reported in May. \n Many top Viners, marketers and ad buyers abandoned the site, frustrated that it never implemented a sustainable advertising model. Dominant creators, such as Viral Nation clients Joey Purpdrank and Max Jr., shifted to making longer videos for YouTube, Facebook and other platforms that drew larger audiences and a chance to make money through advertising. The app was recently ranked 284 among free U.S. apps in the App Store, according to data tracker App Annie. \n “If Vine was housed inside a company that was growing at 30% a year…it would have survived,” said Scott Galloway, founder of consumer-brand research firm L2 Inc. and a marketing professor at New York University. For Twitter, “not growing its user base, a part-time CEO and disgruntled investors—all of that adds up to forced focus.” \n A Twitter spokesman wasn't immediately available for comment. Twitter announced the news on Thursday separate from its third-quarter earnings report, which included shrinking revenue growth and job cuts. \n Vine's co-founders instantly expressed remorse on Thursday. “Don't sell your company!” co-founder Rus Yusupov wrote on Twitter. Another co-founder, Dom Hofmann, wrote: “busting out the bourbon.” Mr. Yusupov left Twitter last year as part of a wave of layoffs. Mr. Hofmann left earlier. \n Some users took to Vine to spin the grim news into gags, with lip-sync tributes and comedic acts. There was also some resentment among users who built large followings, directing their anger at Twitter for failing to capitalize on Vine's former zeitgeist status. \n “Vine messed up—they let their top creators leave the app,” said Jason Nash, a comedian who got his start on Vine three years ago and has 2.7 million followers on the site. Still, Mr. Nash said he was grateful to Vine, which inspired him to create independent film “FML” about two social media celebrities trying to drum up more followers. “Weird how fast technology changes,” Mr. Nash said Thursday. “I guess I have my sequel.”`,
+        CONTENT: `Just six months ago, Twitter Inc. called the looping-video app Vine one of its “foundational acquisitions.” On Thursday, the social-media company said it was shutting it down. \n Vine's demise shows how difficult it is for an internet sensation to have staying power and turn profit. \n The app rocketed to the top of the rankings in Apple's app store in early 2013 within weeks of its debut, resonating with young people who were drawn to the short, snappy format. The best of the site's six-second looping videos helped popularize new cultural memes such as “Damn Daniel” and “on fleek.” \n Vine quickly carved a path to fame for a group of artists and creators, some of whom have gone on to launch larger careers as digital influencers. They include King Bach, also known as Andrew Bachelor, who recently signed on for a sitcom in development by 21st Century Fox Inc. Others used their Vine popularity to land product placement and branded content deals. \n But Twitter was never able to fully capitalize on Vine's popularity, and over time the site lost out to competitors like Snap Inc.'s Snapchat, Facebook Inc., Instagram and Alphabet Inc.'s YouTube, The Wall Street Journal reported in May. \n Many top Viners, marketers and ad buyers abandoned the site, frustrated that it never implemented a sustainable advertising model. Dominant creators, such as Viral Nation clients Joey Purpdrank and Max Jr., shifted to making longer videos for YouTube, Facebook and other platforms that drew larger audiences and a chance to make money through advertising. The app was recently ranked 284 among free U.S. apps in the App Store, according to data tracker App Annie. \n “If Vine was housed inside a company that was growing at 30% a year…it would have survived,” said Scott Galloway, founder of consumer-brand research firm L2 Inc. and a marketing professor at New York University. For Twitter, “not growing its user base, a part-time CEO and disgruntled investors—all of that adds up to forced focus.” \n A Twitter spokesman wasn't immediately available for comment. Twitter announced the news on Thursday separate from its third-quarter earnings report, which included shrinking revenue growth and job cuts. \n Vine's co-founders instantly expressed remorse on Thursday. “Don't sell your company!” co-founder Rus Yusupov wrote on Twitter. Another co-founder, Dom Hofmann, wrote: “busting out the bourbon.” Mr. Yusupov left Twitter last year as part of a wave of layoffs. Mr. Hofmann left earlier. \n Some users took to Vine to spin the grim news into gags, with lip-sync tributes and comedic acts. There was also some resentment among users who built large followings, directing their anger at Twitter for failing to capitalize on Vine's former zeitgeist status. \n “Vine messed up — they let their top creators leave the app,” said Jason Nash, a comedian who got his start on Vine three years ago and has 2.7 million followers on the site. Still, Mr. Nash said he was grateful to Vine, which inspired him to create independent film “FML” about two social media celebrities trying to drum up more followers. “Weird how fast technology changes,” Mr. Nash said Thursday. “I guess I have my sequel.”`,
 
         DATE: 'October 28, 2016',
 
@@ -59,7 +59,7 @@ module.exports = {
                 POS: 41,
                 COUNT: 2,
                 TYPE: 'VOCAB',
-                QUESTIONCODE: 'O1'
+                QUESTIONCODE: 'O3'
             },
 
             {
@@ -91,7 +91,49 @@ module.exports = {
             },
 
             {
-                POS: 511,
+                POS: 127,
+                COUNT: 1,
+                TYPE: 'VOCAB',
+                QUESTIONCODE: 'O1'
+            },
+
+            {
+                POS: 211,
+                COUNT: 1,
+                TYPE: 'VOCAB',
+                QUESTIONCODE: 'O4'
+            },
+
+            {
+                POS: 325,
+                COUNT: 1,
+                TYPE: 'VOCAB',
+                QUESTIONCODE: 'O5'
+            },
+
+            {
+                POS: 357,
+                COUNT: 1,
+                TYPE: 'VOCAB',
+                QUESTIONCODE: 'O6'
+            },
+
+            {
+                POS: 453,
+                COUNT: 2,
+                TYPE: 'VOCAB',
+                QUESTIONCODE: 'O7'
+            },
+
+            {
+                POS: 500,
+                COUNT: 2,
+                TYPE: 'VOCAB',
+                QUESTIONCODE: 'O8'
+            },
+
+            {
+                POS: 513,
                 COUNT: 1,
                 TYPE: 'GRAMMAR',
                 QUESTIONCODE: 'D2'
@@ -105,7 +147,7 @@ module.exports = {
             TYPE: 'SINGLECHOICE',
             TYPE_QUESTION: 'VOCAB',
             CODE: 'O1',
-            POINT: 5,
+            POINT: 2,
             REQUIREMENT: 'Choose the correct answer',
             QUESTION: `If you're an "influencers" or "influential" on social media, _____.`,
             ANSWERS:
@@ -115,6 +157,124 @@ module.exports = {
             ],
             CORRECT_ANS: 2,
             INFORM: `You "influence" (= have an effect on) how people behave and think.`,
+
+            USER_ANSWERS: -1,
+            ANSWERED_DATE: null,
+            POINTS_EARNED: 0
+        },
+        {
+            TYPE: 'SINGLECHOICE',
+            TYPE_QUESTION: 'VOCAB',
+            CODE: 'O3',
+            POINT: 1,
+            REQUIREMENT: 'Choose the correct answer',
+            QUESTION: `A movie with "staying power" stays popular for a long time.`,
+            ANSWERS:
+            [
+                "True",
+                "False"
+            ],
+            CORRECT_ANS: 1,
+            INFORM: `Staying power is the ability to keep going even when it might be difficult to do so.`,
+
+            USER_ANSWERS: -1,
+            ANSWERED_DATE: null,
+            POINTS_EARNED: 0
+        },
+        {
+            TYPE: 'SINGLECHOICE',
+            TYPE_QUESTION: 'VOCAB',
+            CODE: 'O4',
+            POINT: 1,
+            REQUIREMENT: 'Choose the correct answer',
+            QUESTION: `If you abandon something, you ___.`,
+            ANSWERS:
+            [
+                "embrace it",
+                "give up on it"
+            ],
+            CORRECT_ANS: 2,
+            INFORM: ``,
+
+            USER_ANSWERS: -1,
+            ANSWERED_DATE: null,
+            POINTS_EARNED: 0
+        },
+        {
+            TYPE: 'SINGLECHOICE',
+            TYPE_QUESTION: 'VOCAB',
+            CODE: 'O5',
+            POINT: 2,
+            REQUIREMENT: 'Choose the correct answer',
+            QUESTION: `Why might your employees be disgruntled?`,
+            ANSWERS:
+            [
+                "Because you've given them a pay rise.",
+                "Because you've told them they need to work this weekend.",
+                "Because they don't have enough qualifications."
+            ],
+            CORRECT_ANS: 2,
+            INFORM: `If somebody is disgruntled, they are angry or unhappy about a situation that's bad for them.`,
+
+            USER_ANSWERS: -1,
+            ANSWERED_DATE: null,
+            POINTS_EARNED: 0
+        },
+        {
+            TYPE: 'SINGLECHOICE',
+            TYPE_QUESTION: 'VOCAB',
+            CODE: 'O6',
+            POINT: 2,
+            REQUIREMENT: 'Choose the correct answer',
+            QUESTION: `Which word has a similar meaning to "shrink"?`,
+            ANSWERS:
+            [
+                "analyze",
+                "expand",
+                "contract",
+                "adjust"
+            ],
+            CORRECT_ANS: 4,
+            INFORM: `The answer is "contract." If something shrinks or contracts, it gets smaller.`,
+
+            USER_ANSWERS: -1,
+            ANSWERED_DATE: null,
+            POINTS_EARNED: 0
+        },
+        {
+            TYPE: 'SINGLECHOICE',
+            TYPE_QUESTION: 'VOCAB',
+            CODE: 'O7',
+            POINT: 2,
+            REQUIREMENT: 'Choose the correct answer',
+            QUESTION: `Which of these people has messed up?`,
+            ANSWERS:
+            [
+                "Matt lands a new deal with a big client.",
+                "Ange sets the wrong price on a product and sells it at a tiny margin.",
+                "Clive gives a presentation and receives good feedback.",
+            ],
+            CORRECT_ANS: 2,
+            INFORM: `Ange messed up because she made a serious mistake.`,
+
+            USER_ANSWERS: -1,
+            ANSWERED_DATE: null,
+            POINTS_EARNED: 0
+        },
+        {
+            TYPE: 'SINGLECHOICE',
+            TYPE_QUESTION: 'VOCAB',
+            CODE: 'O8',
+            POINT: 1,
+            REQUIREMENT: 'Choose the correct answer',
+            QUESTION: `An independent film is a film produced outside of the major film studio system.`,
+            ANSWERS:
+            [
+                "True",
+                "False"
+            ],
+            CORRECT_ANS: 1,
+            INFORM: `Independent films are films produced mainly or completely outside of the major film studio system. They are usually made with lower budgets than major studio films.`,
 
             USER_ANSWERS: -1,
             ANSWERED_DATE: null,

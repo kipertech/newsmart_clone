@@ -369,7 +369,7 @@ export default class QuestionModal extends Component {
                         this.refs.mainModal.close();
                         setTimeout(
                             () => GLOBAL.ARTICLESCENE.onWordPress(arr[i + 1].POS, arr[i + 1].TYPE, arr[i + 1].QUESTIONCODE)
-                        , 100);
+                        , 200);
                     };
                     break;   
                 }

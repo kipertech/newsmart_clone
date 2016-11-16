@@ -232,16 +232,14 @@ export default class pandora extends Component
                     style={{ backgroundColor: bColor, borderRadius: 5, marginTop: 2, marginBottom: 2 }}
                     underlayColor={uColor}>
 
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
                             source={require('./images/icon_undone.png')}
-                            resizeMode='center'/>
+                            style={{ width: 10, height: 10, marginLeft: 2, marginRight: 2 }}
+                            resizeMode='stretch'/>
 
-                        <Text style={{ color: 'black', fontSize: 15 }}>{newContent}</Text>
+                        <Text style={{ color: 'black', fontSize: 15, marginRight: 2 }}>{newContent}</Text>
 
-                        <Image
-                            source={require('./images/icon_fake.png')}
-                            resizeMode='center'/>
                     </View>
 
                 </TouchableHighlight>
