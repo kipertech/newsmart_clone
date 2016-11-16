@@ -15,131 +15,135 @@ module.exports = {
     grammarPointUpperColor: 'rgb(119, 184, 62)',
 
     //DEMO DATA
-    ARTICLE:
-    {
-        ID: 'AF101',
+    ARTICLES:
+    [
+        {
+            ID: 'AF101',
 
-        TITLE: `Twitter's Vine Shutdown Shows Split Between App’s Popularity, Profits`,
+            TITLE: `Twitter's Vine Shutdown Shows Split Between App’s Popularity, Profits`,
 
-        IMAGE: 'https://d34yfym6wfrgx6.cloudfront.net/uploads/article/custom_image/144308/super_large_MIT-Grad-Rankings_0.jpg',
+            ABSTRACT: 'Twitter on Thursday announced it was shutting down the popular looping-video app Vine, showing how difficult it is for an internet sesation to have staying power and turn a profit.',
 
-        LEVEL: 3,
+            IMAGE: 'https://d34yfym6wfrgx6.cloudfront.net/uploads/article/custom_image/144308/super_large_MIT-Grad-Rankings_0.jpg',
 
-        OBJECTIVE: 'Pandora Level 4 (B2, TOEIC 551–668, TOEFL iBT 53–64, IELTS 5–6)',
+            LEVEL: 3,
 
-        DESCRIPTION: `Double-click any word to translate`,
+            OBJECTIVE: 'Pandora Level 4 (B2, TOEIC 551–668, TOEFL iBT 53–64, IELTS 5–6)',
 
-        TYPE: 'Tech',
+            DESCRIPTION: `Double-click any word to translate`,
 
-        CONTENT: `Just six months ago, Twitter Inc. called the looping-video app Vine one of its “foundational acquisitions.” On Thursday, the social-media company said it was shutting it down. \n Vine's demise shows how difficult it is for an internet sensation to have staying power and turn profit. \n The app rocketed to the top of the rankings in Apple's app store in early 2013 within weeks of its debut, resonating with young people who were drawn to the short, snappy format. The best of the site's six-second looping videos helped popularize new cultural memes such as “Damn Daniel” and “on fleek.” \n Vine quickly carved a path to fame for a group of artists and creators, some of whom have gone on to launch larger careers as digital influencers. They include King Bach, also known as Andrew Bachelor, who recently signed on for a sitcom in development by 21st Century Fox Inc. Others used their Vine popularity to land product placement and branded content deals. \n But Twitter was never able to fully capitalize on Vine's popularity, and over time the site lost out to competitors like Snap Inc.'s Snapchat, Facebook Inc., Instagram and Alphabet Inc.'s YouTube, The Wall Street Journal reported in May. \n Many top Viners, marketers and ad buyers abandoned the site, frustrated that it never implemented a sustainable advertising model. Dominant creators, such as Viral Nation clients Joey Purpdrank and Max Jr., shifted to making longer videos for YouTube, Facebook and other platforms that drew larger audiences and a chance to make money through advertising. The app was recently ranked 284 among free U.S. apps in the App Store, according to data tracker App Annie. \n “If Vine was housed inside a company that was growing at 30% a year…it would have survived,” said Scott Galloway, founder of consumer-brand research firm L2 Inc. and a marketing professor at New York University. For Twitter, “not growing its user base, a part-time CEO and disgruntled investors—all of that adds up to forced focus.” \n A Twitter spokesman wasn't immediately available for comment. Twitter announced the news on Thursday separate from its third-quarter earnings report, which included shrinking revenue growth and job cuts. \n Vine's co-founders instantly expressed remorse on Thursday. “Don't sell your company!” co-founder Rus Yusupov wrote on Twitter. Another co-founder, Dom Hofmann, wrote: “busting out the bourbon.” Mr. Yusupov left Twitter last year as part of a wave of layoffs. Mr. Hofmann left earlier. \n Some users took to Vine to spin the grim news into gags, with lip-sync tributes and comedic acts. There was also some resentment among users who built large followings, directing their anger at Twitter for failing to capitalize on Vine's former zeitgeist status. \n “Vine messed up — they let their top creators leave the app,” said Jason Nash, a comedian who got his start on Vine three years ago and has 2.7 million followers on the site. Still, Mr. Nash said he was grateful to Vine, which inspired him to create independent film “FML” about two social media celebrities trying to drum up more followers. “Weird how fast technology changes,” Mr. Nash said Thursday. “I guess I have my sequel.”`,
+            TYPE: 'Tech',
 
-        DATE: 'October 28, 2016',
+            CONTENT: `Just six months ago, Twitter Inc. called the looping-video app Vine one of its “foundational acquisitions.” On Thursday, the social-media company said it was shutting it down. \n Vine's demise shows how difficult it is for an internet sensation to have staying power and turn profit. \n The app rocketed to the top of the rankings in Apple's app store in early 2013 within weeks of its debut, resonating with young people who were drawn to the short, snappy format. The best of the site's six-second looping videos helped popularize new cultural memes such as “Damn Daniel” and “on fleek.” \n Vine quickly carved a path to fame for a group of artists and creators, some of whom have gone on to launch larger careers as digital influencers. They include King Bach, also known as Andrew Bachelor, who recently signed on for a sitcom in development by 21st Century Fox Inc. Others used their Vine popularity to land product placement and branded content deals. \n But Twitter was never able to fully capitalize on Vine's popularity, and over time the site lost out to competitors like Snap Inc.'s Snapchat, Facebook Inc., Instagram and Alphabet Inc.'s YouTube, The Wall Street Journal reported in May. \n Many top Viners, marketers and ad buyers abandoned the site, frustrated that it never implemented a sustainable advertising model. Dominant creators, such as Viral Nation clients Joey Purpdrank and Max Jr., shifted to making longer videos for YouTube, Facebook and other platforms that drew larger audiences and a chance to make money through advertising. The app was recently ranked 284 among free U.S. apps in the App Store, according to data tracker App Annie. \n “If Vine was housed inside a company that was growing at 30% a year…it would have survived,” said Scott Galloway, founder of consumer-brand research firm L2 Inc. and a marketing professor at New York University. For Twitter, “not growing its user base, a part-time CEO and disgruntled investors—all of that adds up to forced focus.” \n A Twitter spokesman wasn't immediately available for comment. Twitter announced the news on Thursday separate from its third-quarter earnings report, which included shrinking revenue growth and job cuts. \n Vine's co-founders instantly expressed remorse on Thursday. “Don't sell your company!” co-founder Rus Yusupov wrote on Twitter. Another co-founder, Dom Hofmann, wrote: “busting out the bourbon.” Mr. Yusupov left Twitter last year as part of a wave of layoffs. Mr. Hofmann left earlier. \n Some users took to Vine to spin the grim news into gags, with lip-sync tributes and comedic acts. There was also some resentment among users who built large followings, directing their anger at Twitter for failing to capitalize on Vine's former zeitgeist status. \n “Vine messed up — they let their top creators leave the app,” said Jason Nash, a comedian who got his start on Vine three years ago and has 2.7 million followers on the site. Still, Mr. Nash said he was grateful to Vine, which inspired him to create independent film “FML” about two social media celebrities trying to drum up more followers. “Weird how fast technology changes,” Mr. Nash said Thursday. “I guess I have my sequel.”`,
 
-        AUTHOR: 'Deepa Seetharaman',
+            DATE: 'October 28, 2016',
 
-        STARRED: false,
+            AUTHOR: 'Deepa Seetharaman',
 
-        WORDS_DATA:
-        [
-            {
-                POS: 19,
-                COUNT: 1,
-                TYPE: 'VOCAB',
-                QUESTIONCODE: 'M1'
-            },
+            STARRED: false,
 
-            {
-                POS: 29,
-                COUNT: 1,
-                TYPE: 'VOCAB',
-                QUESTIONCODE: 'M2'
-            },
+            WORDS_DATA:
+            [
+                {
+                    POS: 19,
+                    COUNT: 1,
+                    TYPE: 'VOCAB',
+                    QUESTIONCODE: 'M1'
+                },
 
-            {
-                POS: 41,
-                COUNT: 2,
-                TYPE: 'VOCAB',
-                QUESTIONCODE: 'O3'
-            },
+                {
+                    POS: 29,
+                    COUNT: 1,
+                    TYPE: 'VOCAB',
+                    QUESTIONCODE: 'M2'
+                },
 
-            {
-                POS: 44,
-                COUNT: 2,
-                TYPE: 'VOCAB',
-                QUESTIONCODE: 'M3'
-            },
+                {
+                    POS: 41,
+                    COUNT: 2,
+                    TYPE: 'VOCAB',
+                    QUESTIONCODE: 'O3'
+                },
 
-            {
-                POS: 58,
-                COUNT: 2,
-                TYPE: 'VOCAB',
-                QUESTIONCODE: 'O2'
-            },
+                {
+                    POS: 44,
+                    COUNT: 2,
+                    TYPE: 'VOCAB',
+                    QUESTIONCODE: 'M3'
+                },
 
-            {
-                POS: 92,
-                COUNT: 1,
-                TYPE: 'VOCAB',
-                QUESTIONCODE: 'O3'
-            },
+                {
+                    POS: 58,
+                    COUNT: 2,
+                    TYPE: 'VOCAB',
+                    QUESTIONCODE: 'O2'
+                },
 
-            {
-                POS: 102,
-                COUNT: 1,
-                TYPE: 'GRAMMAR',
-                QUESTIONCODE: 'D1'
-            },
+                {
+                    POS: 92,
+                    COUNT: 1,
+                    TYPE: 'VOCAB',
+                    QUESTIONCODE: 'O3'
+                },
 
-            {
-                POS: 127,
-                COUNT: 1,
-                TYPE: 'VOCAB',
-                QUESTIONCODE: 'O1'
-            },
+                {
+                    POS: 102,
+                    COUNT: 1,
+                    TYPE: 'GRAMMAR',
+                    QUESTIONCODE: 'D1'
+                },
 
-            {
-                POS: 211,
-                COUNT: 1,
-                TYPE: 'VOCAB',
-                QUESTIONCODE: 'O4'
-            },
+                {
+                    POS: 127,
+                    COUNT: 1,
+                    TYPE: 'VOCAB',
+                    QUESTIONCODE: 'O1'
+                },
 
-            {
-                POS: 325,
-                COUNT: 1,
-                TYPE: 'VOCAB',
-                QUESTIONCODE: 'O5'
-            },
+                {
+                    POS: 211,
+                    COUNT: 1,
+                    TYPE: 'VOCAB',
+                    QUESTIONCODE: 'O4'
+                },
 
-            {
-                POS: 357,
-                COUNT: 1,
-                TYPE: 'VOCAB',
-                QUESTIONCODE: 'O6'
-            },
+                {
+                    POS: 325,
+                    COUNT: 1,
+                    TYPE: 'VOCAB',
+                    QUESTIONCODE: 'O5'
+                },
 
-            {
-                POS: 453,
-                COUNT: 2,
-                TYPE: 'VOCAB',
-                QUESTIONCODE: 'O7'
-            },
+                {
+                    POS: 357,
+                    COUNT: 1,
+                    TYPE: 'VOCAB',
+                    QUESTIONCODE: 'O6'
+                },
 
-            {
-                POS: 500,
-                COUNT: 2,
-                TYPE: 'VOCAB',
-                QUESTIONCODE: 'O8'
-            },
+                {
+                    POS: 453,
+                    COUNT: 2,
+                    TYPE: 'VOCAB',
+                    QUESTIONCODE: 'O7'
+                },
 
-            {
-                POS: 513,
-                COUNT: 1,
-                TYPE: 'GRAMMAR',
-                QUESTIONCODE: 'D2'
-            },
-        ],
-    },
+                {
+                    POS: 500,
+                    COUNT: 2,
+                    TYPE: 'VOCAB',
+                    QUESTIONCODE: 'O8'
+                },
+
+                {
+                    POS: 513,
+                    COUNT: 1,
+                    TYPE: 'GRAMMAR',
+                    QUESTIONCODE: 'D2'
+                },
+            ],
+        }
+    ],
 
     QUESTION_DATA:
     [
