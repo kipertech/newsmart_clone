@@ -109,7 +109,7 @@ export default class ArticleScene extends Component
         else GLOBAL.ARTICLEMODAL.setState({ questionColor: GLOBAL.vocabColor, mouseDownColor: GLOBAL.vocabMouseDownColor });
         
         //Scroll the view to the word
-        var nHandler = findNodeHandle(this.refs.mainPanel);
+        var nHandler = findNodeHandle(this.mainPanel);
         this.refs['word_' + id].measureLayout(nHandler, (x, y, width, height) => {
 
             //Check if 
@@ -126,7 +126,7 @@ export default class ArticleScene extends Component
 
             //Re-measure the layout to scroll
             this.refs['word_' + id].measureLayout(nHandler, (x2, y2, width2, height2) => {
-                this.refs.mainPanel.scrollTo({ y: y2 - (st.height * 0.2) + height2 + 20 });
+                this.mainPanel.scrollTo({ y: y2 - (st.height * 0.2) + height2 + 20 });
 
                 //Set the position for the triangle
                 this.refs['word_' + id].measureInWindow((xWindow) => {
@@ -434,7 +434,7 @@ export default class ArticleScene extends Component
             <View style={{ flex: 1 }}>
                 {/* Main content */}
                 <ScrollView
-                    ref='mainPanel'
+                    ref={(component) => this.mainPanel = component}
                     onContentSizeChange={(contentWidth, contentHeight) => { scrollHeight = contentHeight; this.scrollHeight = contentHeight }}
                     onScroll={this.onScroll.bind(this)}
                     style={{ flex: 1 }} 

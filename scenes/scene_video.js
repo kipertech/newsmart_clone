@@ -38,15 +38,9 @@ export default class VideoScene extends Component
             scrollDirection: true,
             passedImage: true,
 
-            //Question Data
-            qCode: '',
-
             //Action bar
             closeButton: require('../images/button_close_white.png'),
             starButton: require('../images/button_star_uncheck.png'),
-
-            //scrollHeight
-            spaceViewHeight: 0
         };
 
         this.scrollHeight = 0;
@@ -88,77 +82,62 @@ export default class VideoScene extends Component
     }
 
     //onPress event for each word
-    onWordPress(id, type, code)
+    onWordPress(id, type)
     {
         let modalQuestion;
+        let qColor, mColor;
 
         //Assign question data for modal
-        GLOBAL.QUESTION_DATA.forEach((value, index) => {
-            if (value.CODE == code)
+        modalQuestion = this.props.curArticle.QUESTIONS[id];
+        qColor = (type == 'COMP') ? GLOBAL.compColor : GLOBAL.vocabColor;
+        mColor = (type == 'COMP') ? GLOBAL.compMouseDownColor : GLOBAL.vocabMouseDownColor;
+
+        //Open the modal
+        function openModal()
+        {
+             //Open the modal
+            if (modalQuestion.TYPE == 'DRAGWORD')
             {
-                modalQuestion = value;
-                GLOBAL.ARTICLEMODAL.setState({ curQuestion: value, wordID: id });
+                let newArr = modalQuestion.ANSWERS.slice();
+                newArr = EXTRA.shuffle(newArr);
+                this.refs.qModal.open(true, newArr);
             }
-        });
+            else this.refs.qModal.open(false);
+        }
 
-        //Set the color for the modal
-        if (type == 'COMP')
-            GLOBAL.ARTICLEMODAL.setState({ questionColor: GLOBAL.compColor, mouseDownColor: GLOBAL.compMouseDownColor })
-        else GLOBAL.ARTICLEMODAL.setState({ questionColor: GLOBAL.vocabColor, mouseDownColor: GLOBAL.vocabMouseDownColor });
-        
-        //Scroll the view to the word
-        var nHandler = findNodeHandle(this.refs.mainPanel);
-        this.refs['word_' + id].measureLayout(nHandler, (x, y, width, height) => {
+        //Inform the use about the result
+        function informUser(isCorrect)
+        {
+            let inform = (isCorrect) ? 'Correct! ' : 'Incorrect answer. ';
+            
+            //Set colors
+            GLOBAL.ARTICLEMODAL.setState({
+                informText: inform + modalQuestion.INFORM,
+                generalColor: 'white',
+                pointColor: 'white',
+                titleColor: qColor,
+                pointText: 'points earned',
+                checkText: 'NEXT',
+                checkBorderWidth: 2
+            }, openModal.bind(GLOBAL.ARTICLESCENE));
+        };
 
-            //Check if 
-            if ((y - (st.height * 0.2) + height + 20 + (st.height * 0.8)) > scrollHeight)
-            {
-                this.setState({ spaceViewHeight: scrollHeight + (st.height * 0.8) });
-                this.overScroll = true;
-            }
-            else
-            {
-                this.setState({ spaceViewHeight: 0 });
-                this.overScroll = false;
-            }
-
-            //Re-measure the layout to scroll
-            this.refs['word_' + id].measureLayout(nHandler, (x2, y2, width2, height2) => {
-                this.refs.mainPanel.scrollTo({ y: y2 - (st.height * 0.2) + height2 + 20 });
-
-                //Set the position for the triangle
-                this.refs['word_' + id].measureInWindow((xWindow) => {
-                    GLOBAL.ARTICLEMODAL.setState({ triangleStyle: { left: xWindow + (width / 2) } })    
-                })
-
-                function informUser(isCorrect)
-                {
-                    if (isCorrect)
-                        GLOBAL.ARTICLEMODAL.setState({ informText: 'Correct! ' + modalQuestion.INFORM })
-                    else GLOBAL.ARTICLEMODAL.setState({ informText: 'Incorrect answer. ' + modalQuestion.INFORM })
-                    
-                    //Set colors
-                    GLOBAL.ARTICLEMODAL.setState({
-                        generalColor: 'white',
-                        pointColor: 'white',
-                        titleColor: GLOBAL.ARTICLEMODAL.state.questionColor,
-                        pointText: 'points earned',
-                        checkText: 'NEXT',
-                        checkBorderWidth: 2
-                    })
-                };
-                
+        GLOBAL.ARTICLEMODAL.setState({ 
+            curQuestion: modalQuestion, wordID: id,
+            questionColor: qColor, mouseDownColor: mColor,
+            triangleStyle: { left: -20 } },
+            () => {
                 //Check if the ANSWERED question is correct
                 if (modalQuestion.USER_ANSWERS == -1 || modalQuestion.USER_ANSWERS.length == 0)
                     GLOBAL.ARTICLEMODAL.setState({ 
                         informText: '',
-                        generalColor: GLOBAL.ARTICLEMODAL.state.questionColor ,
+                        generalColor: qColor,
                         pointColor: 'black',
                         titleColor: 'white',
                         pointText: 'points',
                         checkText: 'CHECK',
                         checkBorderWidth: 0
-                    })
+                    }, openModal.bind(GLOBAL.ARTICLESCENE));
                 else
                 {
                     if (modalQuestion.TYPE == 'SINGLECHOICE')
@@ -190,18 +169,13 @@ export default class VideoScene extends Component
                     }
                 }
 
-                //Open the modal
-                if (modalQuestion.TYPE == 'DRAGWORD')
-                {
-                    let newArr = modalQuestion.ANSWERS.slice();
-                    newArr = EXTRA.shuffle(newArr);
-                    this.refs.qModal.open(true, newArr);
-                }
-                else this.refs.qModal.open(false);
-                
-            })
+                //Scroll to just under the video
+                this.refs.mainPanel.scrollTo({ y: st.width * 0.5625 });
+        });  
 
-        });
+        
+                
+              
     }
 
     //Render highlighted word
@@ -215,7 +189,7 @@ export default class VideoScene extends Component
 			<TouchableHighlight
 				ref={'word_' + id}
 				key={id}
-				onPress={() => this.onWordPress(id, value.TYPE)}
+				onPress={() => this.onWordPress(id, value.TYPE_QUESTION)}
 				style={{ backgroundColor: bColor, borderRadius: 5, marginBottom: 5, padding: 5, width: st. width - 30 }}
 				underlayColor={uColor}>
 
@@ -228,7 +202,7 @@ export default class VideoScene extends Component
 					<Text style={{ color: 'white', marginRight: 2 }}>
 						{value.TIME_START}{'-'}{value.TIME_END}{' | '}
 						<Text style={{ fontWeight: 'bold' }}>
-							{value.TYPE_QUESTION == 'COMP' ? 'Comp' : 'Vocab'}{' | '}{value.POINT}{'pts.'}
+							{value.TYPE_QUESTION == 'COMP' ? 'Comp' : 'Vocab'}{' | '}{value.POINT}{' pts.'}
 						</Text>
 					</Text>
 
@@ -510,9 +484,6 @@ export default class VideoScene extends Component
                             </TouchableOpacity>
                         </View>
                     </View>
-
-                    {/* Space View */}
-                    <View style={{ width: st.width, height: this.state.spaceViewHeight }} />
 
                 </ScrollView>
 

@@ -196,7 +196,7 @@ module.exports = {
                     TIME_START: '00:00',
                     TIME_END: '00:45',
 
-                    USER_ANSWERS: -1,
+                    USER_ANSWERS: 1,
                     ANSWERED_DATE: null,
                     POINTS_EARNED: 0
                 },
@@ -226,7 +226,7 @@ module.exports = {
                     TYPE: 'DRAGWORD',
                     TYPE_QUESTION: 'COMP',
                     POINT: 3,
-                    REQUIREMENT: 'Watch this part of the video: [01:10-01:30]. Then tap the words to put them into the box, then drag them into the correct order.',
+                    REQUIREMENT: 'Watch this part of the video: [01:10-01:30]. Then tap the words to put them into the box.',
                     ANSWERS:
                     [
                         {

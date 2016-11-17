@@ -85,7 +85,10 @@ export default class QuestionModal extends Component {
         if (isDrag)
         {
             obj = {}
-            curArray = dragArray;
+
+            if (this.state.informText != '')
+                curArray = []
+            else curArray = dragArray;
 
             //Load user question data
             this.state.curQuestion.USER_ANSWERS.forEach((value) => {
@@ -94,6 +97,8 @@ export default class QuestionModal extends Component {
                         obj[`${EXTRA.getObjSize(obj) + 1}`] = { KEY: value, WORD: value2.WORD };
                 });
             });
+
+            this.forceUpdate();
         }
 
         //Reset all data
@@ -160,12 +165,9 @@ export default class QuestionModal extends Component {
     //DRAGWORD - Map All
     renderDragQuestion()
     {
-        //Stop render the original words if done already
-        if (this.state.informText != '')
-            curArray.splice(0, curArray.length);
-
+        console.log(curArray);
         return(
-            <ScrollView contentContainerStyle={{ padding: 15 }} style={{ height: st.height * 0.8 - 130, width: st.width }}>
+            <ScrollView contentContainerStyle={{ padding: 15 }} style={{ flex: 1 }}>
                 <SortableListView
                     style={{ width: st.width, height: 150, backgroundColor: 'rgb(142, 147, 148)', borderRadius: 4 }}
                     contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', padding: 5, width: st.width - 40 }}
@@ -207,7 +209,7 @@ export default class QuestionModal extends Component {
     renderMultiChoice()
     {
         return (
-            <ScrollView contentContainerStyle={{ padding: 15 }} style={{ height: st.height * 0.8 - 130 }}>
+            <ScrollView contentContainerStyle={{ padding: 15 }} style={{ flex: 1 }}>
                 <Text style={{ fontSize: 18 }}>{this.state.curQuestion.QUESTION}</Text>
 
                 <Radio onSelect={this.onSelect.bind(this)}>
@@ -239,7 +241,7 @@ export default class QuestionModal extends Component {
     renderSingleChoice()
     {
         return (
-            <ScrollView contentContainerStyle={{ padding: 15 }} style={{ height: st.height * 0.8 - 130 }}>
+            <ScrollView contentContainerStyle={{ padding: 15 }} style={{ flex: 1 }}>
                 <Text style={{ fontSize: 18 }}>{this.state.curQuestion.QUESTION}</Text>
 
                 <Radio 
@@ -258,97 +260,96 @@ export default class QuestionModal extends Component {
     //onClick event for check button
     onCheck()
     {
+        let value = this.state.curQuestion;
+
         if (this.state.checkText == 'CHECK')
         {
             if (this.state.curQuestion.TYPE == 'SINGLECHOICE')
             {
-                GLOBAL.QUESTION_DATA.forEach((value, index) => {
-                    if (value.CODE == this.state.curQuestion.CODE)
-                    {
-                        //Save to data
-                        value.USER_ANSWERS = selectedRadio;
-                        value.ANSWERED_DATE = new Date();
+                if (selectedRadio == -1)
+                {
+                    Alert.alert('Pandora Enki', 'Please finish your question first');
+                    return;
+                }
 
-                        //Update render
-                        if (selectedRadio == value.CORRECT_ANS)
-                        {
-                            this.informUser(true)
-                            value.POINTS_EARNED = value.POINT;
-                        }
-                        else
-                        {
-                            this.informUser(false);
-                            value.POINTS_EARNED = 0;
-                        }
-                    }
-                })
+                //Save to data
+                value.USER_ANSWERS = selectedRadio;
+                value.ANSWERED_DATE = new Date();
+
+                //Update render
+                if (selectedRadio == value.CORRECT_ANS)
+                {
+                    this.informUser(true)
+                    value.POINTS_EARNED = value.POINT;
+                }
+                else
+                {
+                    this.informUser(false);
+                    value.POINTS_EARNED = 0;
+                }
             }
             else if (this.state.curQuestion.TYPE == 'MULTIPLECHOICE')
             {
-                GLOBAL.QUESTION_DATA.forEach((value, index) => {
-                    if (value.CODE == this.state.curQuestion.CODE)
-                    {
-                        //Save to data
-                        value.USER_ANSWERS = selectedMulti.slice();
-                        value.ANSWERED_DATE = new Date();
+                if (selectedMulti.length == 0)
+                {
+                    Alert.alert('Pandora Enki', 'Please finish your question first');
+                    return;
+                }
 
-                        //Update render
-                        if (EXTRA.compareArrays(selectedMulti, this.state.curQuestion.CORRECT_ANS))
-                        {
-                            this.informUser(true)
-                            value.POINTS_EARNED = value.POINT;
-                        }
-                        else
-                        {
-                            this.informUser(false);
+                //Save to data
+                value.USER_ANSWERS = selectedMulti.slice();
+                value.ANSWERED_DATE = new Date();
 
-                            //Calculate total corrected answers
-                            var total = 0;
-                            selectedMulti.forEach((v1) => {
-                                value.CORRECT_ANS.forEach((v2) => {
-                                    if (v1 == v2)
-                                        ++total;
-                                    else --total;
-                                })
-                            });
-                            
-                            total = (total < 0) ? 0 : total;
-                            //Save point to data
-                            value.POINTS_EARNED = Math.round(value.POINT * (total / value.CORRECT_ANS.length));
-                        }
-                    }
-                })
+                //Update render
+                if (EXTRA.compareArrays(selectedMulti, this.state.curQuestion.CORRECT_ANS))
+                {
+                    this.informUser(true)
+                    value.POINTS_EARNED = value.POINT;
+                }
+                else
+                {
+                    this.informUser(false);
+
+                    //Calculate total corrected answers
+                    var total = 0;
+                    selectedMulti.forEach((v1) => {
+                        value.CORRECT_ANS.forEach((v2) => {
+                            if (v1 == v2)
+                                ++total;
+                            else --total;
+                        })
+                    });
+                    
+                    total = (total < 0) ? 0 : total;
+                    //Save point to data
+                    value.POINTS_EARNED = Math.round(value.POINT * (total / value.CORRECT_ANS.length));
+                }
             }
             else if (this.state.curQuestion.TYPE == 'DRAGWORD')
             {
-                GLOBAL.QUESTION_DATA.forEach((value, index) => {
-                    if (value.CODE == this.state.curQuestion.CODE)
-                    {
-                        //Check if user has finished the question
-                        if (Object.keys(obj).length != this.state.curQuestion.ANSWERS.length)
-                        {
-                            alert('Plese finish the question by putting all the words into the box!');
-                            return;
-                        };
+                //Check if user has finished the question
+                if (Object.keys(obj).length != this.state.curQuestion.ANSWERS.length)
+                {
+                    alert('Plese finish the question by putting all the words into the box!');
+                    return;
+                };
 
-                        //Check if the words are in correct order
-                        var check = true;
-                        Object.keys(obj).forEach((data) => {
-                            if (obj[data].WORD != this.state.curQuestion.ANSWERS[data - 1].WORD)
-                                check = false;
-                        });
+                //Check if the words are in correct order
+                var check = true;
+                Object.keys(obj).forEach((data) => {
+                    if (obj[data].WORD != this.state.curQuestion.ANSWERS[data - 1].WORD)
+                        check = false;
+                });
 
-                        //Save to data
-                        var tempArr = [];
-                        Object.keys(obj).forEach((data) => tempArr.push(obj[data].KEY) );
-                        value.USER_ANSWERS = tempArr.slice();
-                        value.ANSWERED_DATE = new Date();
+                //Save to data
+                var tempArr = [];
+                Object.keys(obj).forEach((data) => tempArr.push(obj[data].KEY) );
+                value.USER_ANSWERS = tempArr.slice();
+                value.ANSWERED_DATE = new Date();
 
-                        //Set render
-                        this.informUser(check);
-                        value.POINTS_EARNED = (check) ? value.POINT : 0;
-                    }
-                })      
+                //Set render
+                this.informUser(check);
+                value.POINTS_EARNED = (check) ? value.POINT : 0;
             }
             else Alert.alert('Pandora Enki', 'Unsupported question type, please contact the developer for more information');
 
@@ -358,24 +359,40 @@ export default class QuestionModal extends Component {
         }
         else
         {
-            var item = {};
-            const arr = GLOBAL.ARTICLESCENE.props.curArticle.WORDS_DATA;
-            for (var i = 0; i < arr.length; ++i)
+            //Go to next question
+            if (GLOBAL.ARTICLESCENE.props.curArticle.ID.indexOf('AF') > -1)
             {
-                if (arr[i].POS == this.state.wordID)
+                const arr = GLOBAL.ARTICLESCENE.props.curArticle.WORDS_DATA;
+                for (var i = 0; i < arr.length; ++i)
                 {
-                    if (i >= arr.length - 1)
-                        GLOBAL.ARTICLESCENE.setState({ spaceViewHeight: 0 }, () => {
-                            this.refs.mainModal.close()
-                        })
-                    else
+                    if (arr[i].POS == this.state.wordID)
                     {
-                        this.refs.mainModal.close();
-                        setTimeout(
-                            () => GLOBAL.ARTICLESCENE.onWordPress(arr[i + 1].POS, arr[i + 1].TYPE, arr[i + 1].QUESTIONCODE)
-                        , 200);
-                    };
-                    break;   
+                        if (i >= arr.length - 1)
+                            GLOBAL.ARTICLESCENE.setState({ spaceViewHeight: 0 }, () => {
+                                this.refs.mainModal.close()
+                            })
+                        else
+                        {
+                            this.refs.mainModal.close();
+                            setTimeout(
+                                () => GLOBAL.ARTICLESCENE.onWordPress(arr[i + 1].POS, arr[i + 1].TYPE, arr[i + 1].QUESTIONCODE)
+                            , 200);
+                        };
+                        break;   
+                    }
+                }
+            }
+            else
+            {
+                const arr = GLOBAL.ARTICLESCENE.props.curArticle.QUESTIONS;
+                if (this.state.wordID >= arr.length - 1)
+                    this.refs.mainModal.close()
+                else
+                {
+                    this.refs.mainModal.close();
+                    setTimeout(
+                        () => GLOBAL.ARTICLESCENE.onWordPress(this.state.wordID + 1, arr[this.state.wordID + 1].TYPE_QUESTION)
+                    , 300);
                 }
             }
         }
@@ -385,7 +402,7 @@ export default class QuestionModal extends Component {
     scrollBack()
     {
         if (GLOBAL.ARTICLESCENE.overScroll)
-            GLOBAL.ARTICLESCENE.refs['mainPanel'].scrollTo({ y: GLOBAL.ARTICLESCENE.scrollHeight })
+            GLOBAL.ARTICLESCENE.mainPanel.scrollTo({ y: GLOBAL.ARTICLESCENE.scrollHeight })
     }
 
     //Render the inform text after user has answered
@@ -415,7 +432,7 @@ export default class QuestionModal extends Component {
                     </Text>
                 </View>
             )
-        else return(<View/>);
+        else return(<View style={{ flex: 1 }}/>);
     }
 
     //Render disabled view
