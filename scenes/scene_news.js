@@ -31,7 +31,7 @@ export default class NewsScene extends Component {
         return (
             <TouchableOpacity 
                 key={article.ID} 
-                onPress={(article.TYPE == 'NORMAL') ? () => Actions.article({ curArticle: article }) : () => Actions.video()}>
+                onPress={(article.TYPE == 'NORMAL') ? () => Actions.article({ curArticle: article }) : () => Actions.video({ curArticle: article })}>
 
                 <View style={{ backgroundColor: 'white', width: st.width, marginBottom: 10 }}>
 
@@ -118,7 +118,7 @@ export default class NewsScene extends Component {
     //Main render function
     render() {
         return (
-            <ScrollView style={{ flex: 1, alignItems: 'center' }}>
+            <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: 'center' }}>
                 { GLOBAL.ARTICLES.map((value, index) => this.renderCard(value)) }
             </ScrollView>
         );

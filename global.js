@@ -8,11 +8,15 @@ module.exports = {
     vocabMouseDownColor: '#DB991A',
     grammarColor: '#77B83E',
     grammarMouseDownColor: '#53911C',
+    compColor: 'rgb(66, 197, 212)',
+    compMouseDownColor: '#269EAE',
 
     vocabPointUnderColor: 'rgb(255, 205, 108)',
     vocabPointUpperColor: 'rgb(250, 183, 52)',
     grammarPointUnderColor: 'rgb(138, 195, 89)',
     grammarPointUpperColor: 'rgb(119, 184, 62)',
+    compPointUpperColor: 'rgb(105, 215, 223)',
+    compPointUnderColor: 'rgb(66, 197, 212)',
 
     //DEMO DATA
     ARTICLES:
@@ -149,11 +153,13 @@ module.exports = {
         {
             ID: 'VF101',
 
-            TITLE: `Social Media Companies Tackle Fake News and Abuse`,
+            TITLE: `Samsung's Drive Toward Smarter Cars`,
 
-            ABSTRACT: 'Twitter, Facebook and Google are taking steps to reduce fake news, misinformation, and harassment on the internet after users expressed concerns that false news stories and hate speech fueled divisiveness in the recent presidential election campaign. Photo: Bloomberg News',
+            ABSTRACT: 'Samsung Electronics Co. makes a drive for control of the car, paying $8 billion for U.S. auto-parts supplier Harman International Industries.',
 
-            IMAGE: 'http://1u88jj3r4db2x4txp44yqfj1.wpengine.netdna-cdn.com/wp-content/uploads/2014/04/markzuckerberg.jpg',
+            IMAGE: 'http://blog.parapusula.com/content/userfiles/listitem/big/apple-ve-cin-li-teknoloji-sirketleri-samsung-u-caresiz-birakti-37m16.jpg',
+
+            VIDEO: {uri: 'http://m.wsj.net/video/20161114/111416samsungharman/111416samsungharman_v2_ec664k.mp4'},
 
             LEVEL: 4,
 
@@ -170,6 +176,98 @@ module.exports = {
             AUTHOR: 'Anonymous',
 
             STARRED: true,
+
+            QUESTIONS: 
+            [
+                {
+                    TYPE: 'SINGLECHOICE',
+                    TYPE_QUESTION: 'COMP',
+                    POINT: 3,
+                    REQUIREMENT: 'Watch this part of the video: [00:00-00:45]. Then choose the correct answer.',
+                    QUESTION: `Samsung plans to sell cars`,
+                    ANSWERS:
+                    [
+                        "True",
+                        "False"
+                    ],
+                    CORRECT_ANS: 2,
+                    INFORM: `Samsung doesn't plan to sell cars, but to sell more components.`,
+
+                    TIME_START: '00:00',
+                    TIME_END: '00:45',
+
+                    USER_ANSWERS: -1,
+                    ANSWERED_DATE: null,
+                    POINTS_EARNED: 0
+                },
+                {
+                    TYPE: 'SINGLECHOICE',
+                    TYPE_QUESTION: 'VOCAB',
+                    POINT: 3,
+                    REQUIREMENT: 'Watch this part of the video: [00:50-01:20]. Then choose the correct answer.',
+                    QUESTION: `Harman is originally a _____`,
+                    ANSWERS:
+                    [
+                        "Audio pioneer",
+                        "Automative manufacturer",
+                        "Software developer"
+                    ],
+                    CORRECT_ANS: 1,
+                    INFORM: ``,
+
+                    TIME_START: '00:50',
+                    TIME_END: '01:20',
+
+                    USER_ANSWERS: -1,
+                    ANSWERED_DATE: null,
+                    POINTS_EARNED: 0
+                },
+                {
+                    TYPE: 'DRAGWORD',
+                    TYPE_QUESTION: 'COMP',
+                    POINT: 3,
+                    REQUIREMENT: 'Watch this part of the video: [01:10-01:30]. Then tap the words to put them into the box, then drag them into the correct order.',
+                    ANSWERS:
+                    [
+                        {
+                            KEY: 1,
+                            WORD: "'Net"
+                        },
+                        {
+                            KEY: 2,
+                            WORD: "profit'"
+                        },
+                        {
+                            KEY: 3,
+                            WORD: "is"
+                        },
+                        {
+                            KEY: 4,
+                            WORD: "profit"
+                        },
+                        {
+                            KEY: 5,
+                            WORD: "made"
+                        },
+                        {
+                            KEY: 6,
+                            WORD: "after"
+                        },
+                        {
+                            KEY: 7,
+                            WORD: "cost."
+                        }
+                    ],
+                    INFORM: ``,
+                    
+                    TIME_START: '01:10',
+                    TIME_END: '01:30',
+
+                    USER_ANSWERS: [],
+                    ANSWERED_DATE: '',
+                    POINTS_EARNED: 0
+                },
+            ]
         }
     ],
 

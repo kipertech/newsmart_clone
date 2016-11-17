@@ -10,9 +10,9 @@ export default class pandora extends Component {
     return (
       <Router>
           <Scene key="root" hideNavBar={true}>
-				<Scene key="news" component={NewsScene} title="News" initial={true}/>
-				<Scene key="article" component={ArticleScene} title="Article"/>
-				<Scene key="video" component={VideoScene} title="Video"/>
+              <Scene key="news" component={NewsScene} title="News" initial={true}/>
+              <Scene key="article" component={ArticleScene} title="Article"/>
+              <Scene key="video" component={VideoScene} title="Video"/>
           </Scene>
       </Router>
     );
