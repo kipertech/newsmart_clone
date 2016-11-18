@@ -170,7 +170,7 @@ export default class QuestionModal extends Component {
         return(
             <ScrollView contentContainerStyle={{ padding: 15 }} style={{ flex: 1 }}>
                 <SortableListView
-                    style={{ width: st.width, height: 150, backgroundColor: 'rgb(142, 147, 148)', borderRadius: 4 }}
+                    style={{ width: st.width - 30, height: 150, backgroundColor: 'rgb(142, 147, 148)', borderRadius: 4 }}
                     contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', padding: 5, width: st.width - 40 }}
                     data={obj}
                     renderRow={(data) => <DragButton key={data.KEY} content={data.WORD} onClick={() => this.onRemove(data)}/>}
@@ -462,6 +462,7 @@ export default class QuestionModal extends Component {
                 position={'bottom'} ref={'mainModal'} backButtonClose={true}
                 backdropOpacity={0.7}
                 backdropPressToClose={false}
+                backButtonClose={false}
                 animationDuration={200}
                 onClosed={this.scrollBack.bind(this)}
                 >

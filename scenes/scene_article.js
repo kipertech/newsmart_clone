@@ -296,11 +296,11 @@ export default class ArticleScene extends Component
         if (this.state.topPanelColor == 'white')
         {
             return(
-                <View style={{ marginLeft: 55, marginRight: 55, height: 45, alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ marginLeft: 55, marginRight: 55, height: 45, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent'  }}>
                     {/* Title */}
                     <Text 
                         numberOfLines={1} 
-                        style={{ fontSize: 18, color: 'black', fontWeight: 'bold', textAlign: 'center' }}>
+                        style={{ fontSize: 18, color: 'black', fontWeight: 'bold', textAlign: 'center', backgroundColor: 'transparent' }}>
                         {this.props.curArticle.TITLE}
                     </Text>
                 </View>
@@ -455,7 +455,7 @@ export default class ArticleScene extends Component
 
                             <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'black', opacity: 0.2 }}/>
 
-                            <Text style={{ fontWeight: 'bold', fontSize: 25, fontFamily: 'Cochin', color: 'white', alignSelf: 'flex-end', padding: 15 }}>{this.props.curArticle.TITLE}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 25, fontFamily: 'Cochin', color: 'white', alignSelf: 'flex-end', padding: 15, backgroundColor: 'transparent'  }}>{this.props.curArticle.TITLE}</Text>
 
                         </Image>
 
@@ -469,7 +469,7 @@ export default class ArticleScene extends Component
                                 color={GLOBAL.vocabPointUpperColor}
                                 unfilledColor={GLOBAL.vocabPointUnderColor}>
                                 
-                                <Text style={{ color: 'white', marginLeft: 15 }}>
+                                <Text style={{ color: 'white', marginLeft: 15, backgroundColor: 'transparent'  }}>
                                     {totalEarnedVocabPoint}/{totalVocabPoint} 
                                     <Text style={{ fontWeight: 'bold' }}>
                                         {' '}Vocab
@@ -485,7 +485,7 @@ export default class ArticleScene extends Component
                                 color={GLOBAL.grammarPointUpperColor}
                                 unfilledColor={GLOBAL.grammarPointUnderColor}>
 
-                                <Text style={{ color: 'white', marginLeft: 15 }}>
+                                <Text style={{ color: 'white', marginLeft: 15, backgroundColor: 'transparent'  }}>
                                     {totalEarnedGrammarPoint}/{totalGrammarPoint}
                                     <Text style={{ fontWeight: 'bold' }}>
                                         {' '}Grammar
@@ -533,7 +533,7 @@ export default class ArticleScene extends Component
 
                     <View style={{ margin: 15 }}>
                         {/* Title */}
-                        <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'black', marginBottom: 10 }}>{this.props.curArticle.TITLE}</Text>
+                        <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'black', marginBottom: 10, backgroundColor: 'transparent'  }}>{this.props.curArticle.TITLE}</Text>
 
                         {/* Article Content */}
                         <View style={{ flex: 1, flexWrap: 'wrap', flexDirection: 'row', alignItems: 'flex-start' }}>

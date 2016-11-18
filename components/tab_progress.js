@@ -144,7 +144,7 @@ export default class ProgressTab extends Component {
 																progress={(grammarPoint / pointArr[2]) > 0 ? (grammarPoint / pointArr[2]) : 0.075}
 																width={st * 0.8 - 40 - 5}
 																height={15}
-																borderRadius={0}
+																borderRadius={5}
 																borderWidth={0}
 																color={GLOBAL.grammarColor}
 																unfilledColor={'transparent'}
@@ -160,7 +160,7 @@ export default class ProgressTab extends Component {
 																progress={(compPoint / pointArr[2]) > 0 ? (compPoint / pointArr[2]) : 0.075} 
 																width={st * 0.8 - 40 - 5}
 																height={15}
-																borderRadius={0}
+																borderRadius={5}
 																borderWidth={0}
 																color={GLOBAL.compColor}
 																unfilledColor={'transparent'}
