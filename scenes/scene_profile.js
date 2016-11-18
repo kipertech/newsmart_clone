@@ -16,7 +16,7 @@ import { Actions, Scene, Router, Tabbar } from 'react-native-router-flux'
 const GLOBAL = require('../global')
 import Info from '../components/tab_info';
 import Activity from '../components/tab_activity';
-import Progress from '../components/tab_progress';
+import ProgressTab from '../components/tab_progress';
 import EditProfile from '../components/modal_edit_profile';
 
 /*---*/
@@ -69,7 +69,7 @@ export default class Profile extends Component {
                     shortbio={info.SHORTBIO} />
             )
         else if (this.state.showProgress) 
-            return <Progress/>
+            return <ProgressTab/>
         else if (this.state.showActivity) 
             return <Activity/>
     }

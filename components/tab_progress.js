@@ -10,12 +10,12 @@ import {
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
-import * as ProgressBar from 'react-native-progress';
+import * as Progress from 'react-native-progress';
 
 const st = Dimensions.get('window').width;
 const GLOBAL = require('../global')
 
-export default class Progress extends Component {
+export default class ProgressTab extends Component {
     constructor(props) {
         super(props);
         vocabNum = 0;
@@ -81,10 +81,10 @@ export default class Progress extends Component {
 												}
 												else if (item.TYPE_QUESTION == 'COMP') 
 												{
-														compNum++;
+														++compNum;
 														if (item.POINTS_EARNED > 0) 
 														{
-																compCorrectNum++;
+																++compCorrectNum;
 																compPoint += item.POINTS_EARNED
 														}
 												}
@@ -97,21 +97,80 @@ export default class Progress extends Component {
 		//Main render function
     render() 
 		{
+				var pointArr = [vocabPoint, grammarPoint, compPoint];
+				for (var i = 0; i < pointArr.length; ++i)
+						for (var j = i + 1; j < pointArr.length; ++j)
+						{
+								if (pointArr[i] > pointArr[j])
+								{
+										var temp = pointArr[i];
+										pointArr[i] = pointArr[j];
+										pointArr[j] = temp;
+								}
+						}
+				
+				if (pointArr[2] <= 0)
+						pointArr[2] = 1;
+
         return (
             <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
                 <View style={{ padding: 20, paddingTop: 10 }}>
                     <Text style={{ paddingBottom: 20, fontSize: 20 }}>Point This Week</Text>
 
                     <View style={{flexDirection:'row'}}>
-                        <View style={{ alignItems: 'flex-end' }}>
+                        <View style={{ alignItems: 'flex-end', width: st * 0.2 }}>
                             <Text style={{ color: '#292929' }}> Vocab </Text>
                             <Text style={{ color: '#292929' }}> Grammar </Text>
                             <Text style={{ color: '#292929' }}> Comp </Text>
                         </View>
-                        <View style={{ alignItems: 'center' }}>
-                            <Text style={{ color: 'white', backgroundColor: '#F6C363' }}> {vocabPoint} </Text>
-                            <Text style={{ color: 'white', backgroundColor: '#7CB549' }}> {grammarPoint} </Text>
-                            <Text style={{ color: 'white', backgroundColor: '#3CC0DC' }}> {compPoint} </Text>
+                        <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 5 }}>
+                            <Progress.Bar 
+																progress={(vocabPoint / pointArr[2]) > 0 ? (vocabPoint / pointArr[2]) : 0.075}
+																width={st * 0.8 - 40 - 5}
+																height={15}
+																borderRadius={5}
+																borderWidth={0}
+																color={GLOBAL.vocabColor}
+																unfilledColor={'transparent'}
+																style={{ marginTop: 2 }}>
+
+																<Text style={{ color: 'white', marginLeft: 5 }}>
+                                    {vocabPoint}
+                                </Text>
+
+														</Progress.Bar>
+
+														<Progress.Bar 
+																progress={(grammarPoint / pointArr[2]) > 0 ? (grammarPoint / pointArr[2]) : 0.075}
+																width={st * 0.8 - 40 - 5}
+																height={15}
+																borderRadius={0}
+																borderWidth={0}
+																color={GLOBAL.grammarColor}
+																unfilledColor={'transparent'}
+																style={{ marginTop: 2 }}>
+
+																<Text style={{ color: 'white', marginLeft: 5 }}>
+                                    {grammarPoint}
+                                </Text>
+
+														</Progress.Bar>
+
+														<Progress.Bar 
+																progress={(compPoint / pointArr[2]) > 0 ? (compPoint / pointArr[2]) : 0.075} 
+																width={st * 0.8 - 40 - 5}
+																height={15}
+																borderRadius={0}
+																borderWidth={0}
+																color={GLOBAL.compColor}
+																unfilledColor={'transparent'}
+																style={{ marginTop: 2 }}>
+
+																<Text style={{ color: 'white', marginLeft: 5 }}>
+                                  	{compPoint}
+                                </Text>
+
+														</Progress.Bar>
                         </View>
                     </View>
                     
@@ -136,7 +195,7 @@ export default class Progress extends Component {
 
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
 
-                        <ProgressBar.Circle 
+                        <Progress.Circle 
                             size={st / 3 - 20} 
                             progress={(vocabCorrectNum / vocabNum > 0) ? (vocabCorrectNum / vocabNum) : 1} 
                             color='#ED6030' 
@@ -146,9 +205,9 @@ export default class Progress extends Component {
                             contentTextStyle={{ fontWeight: 'bold', fontSize: 15 }}
                             borderColor='#E5E5E5'
                             textStyle={{ fontSize: 25, fontWeight: '100' }}>
-                        </ProgressBar.Circle>
+                        </Progress.Circle>
 
-                        <ProgressBar.Circle 
+                        <Progress.Circle 
                             size={st / 3 - 20} 
                             progress={(gramCorrectNum / gramNum > 0) ? (gramCorrectNum / gramNum) : 1} 
                             color='green' 
@@ -158,9 +217,9 @@ export default class Progress extends Component {
                             contentTextStyle={{ fontWeight: 'bold', fontSize: 15 }}
                             borderColor='#E5E5E5'
                             textStyle={{ fontSize: 25, fontWeight: '100' }}>
-                        </ProgressBar.Circle>
+                        </Progress.Circle>
 
-                        <ProgressBar.Circle 
+                        <Progress.Circle 
                             size={st / 3 - 20} 
                             progress={(compCorrectNum / compNum > 0) ? (compCorrectNum / compNum) : 1} 
                             color='#3CC0DC' 
@@ -170,7 +229,7 @@ export default class Progress extends Component {
                             contentTextStyle={{ fontWeight: 'bold', fontSize: 15 }}
                             borderColor='#E5E5E5' 
                             textStyle={{ fontSize: 25, fontWeight: '100' }}>
-                        </ProgressBar.Circle>
+                        </Progress.Circle>
                     </View>
                 </View >
 

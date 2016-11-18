@@ -279,7 +279,7 @@ module.exports = {
                     TIME_END: '01:30',
 
                     USER_ANSWERS: [],
-                    ANSWERED_DATE: '',
+                    ANSWERED_DATE: null,
                     POINTS_EARNED: 0
                 },
             ]
@@ -341,8 +341,8 @@ module.exports = {
             CORRECT_ANS: 2,
             INFORM: ``,
 
-            USER_ANSWERS: -1,
-            ANSWERED_DATE: null,
+            USER_ANSWERS: 1,
+            ANSWERED_DATE: '02/11/2016',
             POINTS_EARNED: 0
         },
         {
@@ -605,8 +605,8 @@ module.exports = {
             ],
             INFORM: `The correct answer is "Sometimes it takes us no time.".`,
 
-            USER_ANSWERS: [],
-            ANSWERED_DATE: '',
+            USER_ANSWERS: [5, 6, 4, 3, 2, 1],
+            ANSWERED_DATE: '19/11/2016',
             POINTS_EARNED: 0
         },
     ],

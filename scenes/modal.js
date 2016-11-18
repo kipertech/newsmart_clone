@@ -22,6 +22,7 @@ import SortableList from 'react-native-sortable-list';
 import Triangle from '../components/Triangle';
 GLOBAL = require('../global');
 EXTRA = require('../components/extra_functions')
+import moment from 'moment';
 
 //Variables
 let st = Dimensions.get('window');
@@ -274,7 +275,7 @@ export default class QuestionModal extends Component {
 
                 //Save to data
                 value.USER_ANSWERS = selectedRadio;
-                value.ANSWERED_DATE = new Date();
+                value.ANSWERED_DATE = moment(new Date()).format('MM/DD/YYYY');;
 
                 //Update render
                 if (selectedRadio == value.CORRECT_ANS)
