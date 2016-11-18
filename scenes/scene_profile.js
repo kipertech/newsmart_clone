@@ -97,8 +97,8 @@ export default class Profile extends Component {
                     </TouchableOpacity>
 
                     {/* Scene Title */}
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ color: 'black', fontSize: 18 }}>My Profile</Text>
+                    <View style={{ width: st.width - 100, marginLeft: 5, justifyContent: 'center' }}>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black' }}>My Profile</Text>
                     </View>
 
                     {/* Edit Profile Button */}
@@ -106,7 +106,7 @@ export default class Profile extends Component {
                         onPress={() => this.openSelection()}
                         style={{ width: 50, height: 50, alignItems: 'center', justifyContent: 'center' }} >
                         <Image
-                            style={{ width: 25, height: 25 }}
+                            style={{ width: 20, height: 20 }}
                             source={require('../images/icon_settings.png')}
                             resizeMode='stretch'/>
                     </TouchableOpacity>

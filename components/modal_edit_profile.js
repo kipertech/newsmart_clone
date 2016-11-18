@@ -72,7 +72,7 @@ export default class EditProfile extends Component {
 
                   {/* Scene Title */}
                   <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                      <Text style={{ color: 'black', fontSize: 18 }}>Edit Profile</Text>
+                      <Text style={{ color: 'black', fontSize: 18, fontWeight: 'bold' }}>Edit Profile</Text>
                   </View>
 
                   {/* Done button */}

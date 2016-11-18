@@ -80,7 +80,7 @@ export default class NewsScene extends Component {
 
                             {/* Level */}
                             <View style={{ height: 30, flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={{ marginRight: 5 }}>Level</Text>
+                                <Text style={{ marginRight: 35 }}>Level</Text>
 
                                 <Progress.Circle
                                     size={30} 
@@ -101,7 +101,7 @@ export default class NewsScene extends Component {
                                     thickness={3}
                                     borderColor='rgb(142, 147, 148)'
                                     textStyle={{ fontSize: 13, color: 'rgb(142, 147, 148)' }}
-                                    style={{ alignSelf: 'flex-end' }}
+                                    style={{ position: 'absolute', top: 0, right: 0 }}
                                     color='rgb(116, 113, 227)'
                                 />
                             </View>
