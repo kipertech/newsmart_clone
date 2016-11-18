@@ -43,7 +43,9 @@ export default class EditProfile extends Component {
     this.refs.editProfile.open();
   }
 
-  render() {
+  render() 
+  {
+    var statusHeight = (Platform.OS == 'ios') ? 20 : 0;
     return (
       <Modal
           {...this.props}
@@ -52,9 +54,9 @@ export default class EditProfile extends Component {
           backButtonClose={true}
           backdropOpacity={0.7}
           animationDuration={200}
-          swipeToClose={false}>
+          swipeToClose={true}>
 
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, paddingTop: statusHeight }}>
 
               {/*Action Bar*/}
               <View style={{ height: 50, flexDirection: 'row' }}>

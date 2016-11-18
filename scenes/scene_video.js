@@ -347,6 +347,7 @@ export default class VideoScene extends Component
     //Main render function
     render()
     {
+        let w = st.width, h = st.width * 0.5625;
         return (
             <View style={{ flex: 1 }}>
                 {/* Main content */}
@@ -366,8 +367,19 @@ export default class VideoScene extends Component
                     <View style={{ backgroundColor: '#F4F4F4' }}>
                         {/* Main Image */}
 						<View style={{ width: st.width, height: st.width * 0.5625 }}>
-							<WebView 
-								source={{uri: 'http://m.wsj.net/video/20161114/111416samsungharman/111416samsungharman_v2_ec664k.mp4'}} 
+							<WebView
+                                allowsInlineMediaPlayback={true}
+								source={{ 
+                                        html: `<html>
+                                                    <body style="margin: 0">
+                                                        <embed  
+                                                            width=${w}
+                                                            height=${h}
+                                                            src="http://m.wsj.net/video/20161114/111416samsungharman/111416samsungharman_v2_ec664k.mp4"
+                                                            webkit-playsinline
+                                                        </embed>
+                                                    </body>
+                                                </html>`}} 
 							/>
 						</View>
 
@@ -381,7 +393,7 @@ export default class VideoScene extends Component
                                 color={GLOBAL.vocabPointUpperColor}
                                 unfilledColor={GLOBAL.vocabPointUnderColor}>
                                 
-                                <Text style={{ color: 'white', marginLeft: 15 }}>
+                                <Text style={{ color: 'white', marginLeft: 15, backgroundColor: 'transparent' }}>
                                     {totalEarnedVocabPoint}/{totalVocabPoint} 
                                     <Text style={{ fontWeight: 'bold' }}>
                                         {' '}Vocab
@@ -397,7 +409,7 @@ export default class VideoScene extends Component
                                 color={GLOBAL.compPointUpperColor}
                                 unfilledColor={GLOBAL.compPointUnderColor}>
 
-                                <Text style={{ color: 'white', marginLeft: 15 }}>
+                                <Text style={{ color: 'white', marginLeft: 15, backgroundColor: 'transparent' }}>
                                     {totalEarnedCompPoint}/{totalCompPoint}
                                     <Text style={{ fontWeight: 'bold' }}>
                                         {' '}Comp
@@ -407,10 +419,7 @@ export default class VideoScene extends Component
                         </View>
 
 						{/* Title */}
-						<View>
-							<Text style={{ fontWeight: 'bold', fontSize: 25, fontFamily: 'Cochin', color: 'black', alignSelf: 'flex-end', padding: 15 }}>{this.props.curArticle.TITLE}</Text>
-						</View>
-						
+						<Text style={{ fontWeight: 'bold', fontSize: 25, fontFamily: 'Cochin', color: 'black', alignSelf: 'flex-start', padding: 15 }}>{this.props.curArticle.TITLE}</Text>
 
                         {/* Objective Info */}
                         <View style={{ padding: 15, paddingTop: 0, flexDirection: 'row' }}>

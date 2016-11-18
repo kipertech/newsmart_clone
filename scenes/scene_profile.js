@@ -82,8 +82,9 @@ export default class Profile extends Component {
     //Main render function
     render() 
     {
+        var statusHeight = (Platform.OS == 'ios') ? 20 : 0;
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, paddingTop: statusHeight }}>
                 {/* Action Bar */}
                 <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white' }}>
                     {/*Menu Button*/}

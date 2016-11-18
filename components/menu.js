@@ -6,6 +6,7 @@ import {
   View,
   Image,
   Text,
+  Platform
 } from 'react-native';
 
 
@@ -57,11 +58,13 @@ export default class Menu extends Component {
   }
 };
 
+var statusHeight = (Platform.OS == 'ios') ? 20 : 0;
 const styles = StyleSheet.create({
   menu: {
     flex: 1,
     width: window.width,
     height: window.height,
+    paddingTop: statusHeight,
     backgroundColor: '#616161',
   },
   item: {

@@ -118,16 +118,18 @@ export default class ProgressTab extends Component {
                     <Text style={{ paddingBottom: 20, fontSize: 20 }}>Point This Week</Text>
 
                     <View style={{flexDirection:'row'}}>
-                        <View style={{ alignItems: 'flex-end', width: st * 0.2 }}>
-                            <Text style={{ color: '#292929' }}> Vocab </Text>
-                            <Text style={{ color: '#292929' }}> Grammar </Text>
-                            <Text style={{ color: '#292929' }}> Comp </Text>
+
+                        <View style={{ alignItems: 'flex-end', width: st * 0.2, height: 90 }}>
+                            <Text style={{ color: '#292929', lineHeight: 28 }}>Vocab</Text>
+                            <Text style={{ color: '#292929', lineHeight: 28 }}>Grammar</Text>
+                            <Text style={{ color: '#292929', lineHeight: 28 }}>Comp</Text>
                         </View>
+
                         <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 5 }}>
                             <Progress.Bar 
 																progress={(vocabPoint / pointArr[2]) > 0 ? (vocabPoint / pointArr[2]) : 0.075}
 																width={st * 0.8 - 40 - 5}
-																height={15}
+																height={28}
 																borderRadius={5}
 																borderWidth={0}
 																color={GLOBAL.vocabColor}
@@ -143,7 +145,7 @@ export default class ProgressTab extends Component {
 														<Progress.Bar 
 																progress={(grammarPoint / pointArr[2]) > 0 ? (grammarPoint / pointArr[2]) : 0.075}
 																width={st * 0.8 - 40 - 5}
-																height={15}
+																height={28}
 																borderRadius={5}
 																borderWidth={0}
 																color={GLOBAL.grammarColor}
@@ -159,7 +161,7 @@ export default class ProgressTab extends Component {
 														<Progress.Bar 
 																progress={(compPoint / pointArr[2]) > 0 ? (compPoint / pointArr[2]) : 0.075} 
 																width={st * 0.8 - 40 - 5}
-																height={15}
+																height={28}
 																borderRadius={5}
 																borderWidth={0}
 																color={GLOBAL.compColor}

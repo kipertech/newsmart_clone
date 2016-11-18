@@ -16,8 +16,8 @@ module.exports = {
     vocabPointUpperColor: 'rgb(250, 183, 52)',
     grammarPointUnderColor: 'rgb(138, 195, 89)',
     grammarPointUpperColor: 'rgb(119, 184, 62)',
-    compPointUpperColor: 'rgb(105, 215, 223)',
-    compPointUnderColor: 'rgb(66, 197, 212)',
+    compPointUnderColor: 'rgb(105, 215, 223)',
+    compPointUpperColor: 'rgb(66, 197, 212)',
 
     //User data
     USER_DATA:
@@ -174,7 +174,7 @@ module.exports = {
 
             IMAGE: 'http://blog.parapusula.com/content/userfiles/listitem/big/apple-ve-cin-li-teknoloji-sirketleri-samsung-u-caresiz-birakti-37m16.jpg',
 
-            VIDEO: {uri: 'http://m.wsj.net/video/20161114/111416samsungharman/111416samsungharman_v2_ec664k.mp4'},
+            VIDEO: 'http://m.wsj.net/video/20161114/111416samsungharman/111416samsungharman_v2_ec664k.mp4',
 
             LEVEL: 4,
 

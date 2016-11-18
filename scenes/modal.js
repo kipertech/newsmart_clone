@@ -463,7 +463,7 @@ export default class QuestionModal extends Component {
                 backdropOpacity={0.7}
                 backdropPressToClose={false}
                 backButtonClose={false}
-                animationDuration={200}
+                animationDuration={100}
                 onClosed={this.scrollBack.bind(this)}
                 >
 
