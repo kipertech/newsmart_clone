@@ -2,6 +2,7 @@ module.exports = {
     //Hard values
     ARTICLEMODAL: null,
     ARTICLESCENE: null,
+    PROFILESCENE: null,
 
     //Settings
     vocabColor: '#FFBE40',
@@ -17,6 +18,20 @@ module.exports = {
     grammarPointUpperColor: 'rgb(119, 184, 62)',
     compPointUpperColor: 'rgb(105, 215, 223)',
     compPointUnderColor: 'rgb(66, 197, 212)',
+
+    //User data
+    USER_DATA:
+    {
+        BASIC_INFO:
+        {
+            NAME: 'Tan Nguyen',
+            COUNTRY: 'Viet Nam',
+            JOBTITLE: 'Developer',
+            SHORTBIO: 'Love purple, like pink, introvert and often cry silently',
+            EMAIL: 'tan.nguyen19596@gmail.com',
+            PICTURE: require('./images/profile_pic.jpg')
+        }
+    },
 
     //DEMO DATA
     ARTICLES:
@@ -196,9 +211,9 @@ module.exports = {
                     TIME_START: '00:00',
                     TIME_END: '00:45',
 
-                    USER_ANSWERS: 1,
+                    USER_ANSWERS: 2,
                     ANSWERED_DATE: null,
-                    POINTS_EARNED: 0
+                    POINTS_EARNED: 3
                 },
                 {
                     TYPE: 'SINGLECHOICE',
@@ -551,9 +566,9 @@ module.exports = {
             ],
             INFORM: `Notice how the adverb "quickly" describes the verb "rise," and the adverb "extremely" shows us how quickly the prices rose.`,
 
-            USER_ANSWERS: [],
-            ANSWERED_DATE: null,
-            POINTS_EARNED: 0
+            USER_ANSWERS: [1, 2, 3, 4, 5, 6],
+            ANSWERED_DATE: '18/11/2016',
+            POINTS_EARNED: 3
         },
         {
             TYPE: 'DRAGWORD',
@@ -593,6 +608,102 @@ module.exports = {
             USER_ANSWERS: [],
             ANSWERED_DATE: '',
             POINTS_EARNED: 0
+        },
+    ],
+
+    QUESTION_TEST:
+    [
+        {
+            TYPE: 'SINGLECHOICE',
+            REQUIREMENT: 'Choose the correct answer(s)',
+            QUESTION: "Which headline goes with the picture?",
+            IMAGE: require('./images/test_2.png'),
+            ANSWERS:
+            [
+                "Global Firms Address Latin American Risk",
+                "Facebook's Profit Surges on Mobile-Ad Growth",
+                "Sony Forecasts $1.1 Billion Loss",
+                "More People Pick Homes Over the Phone",
+            ],
+            CORRECT_ANS: 3,
+            USER_ANSWERS: null,
+        },
+        {
+            TYPE: 'SINGLECHOICE',
+            REQUIREMENT: 'Choose the correct answer(s)',
+            QUESTION: "Which headline goes with the picture?",
+            ANSWERS:
+            [
+                "Formula One Boss Steps Aside",
+                "How Busy Colleagues Spread Secondhand Stress",
+                "Downtown Manhattan Penthouse Sells for $50.9 Million",
+                "Apple Repurchases $14 Billion of Own Shares in 2 Weeks",
+            ],
+            CORRECT_ANS: 1,
+            IMAGE: require('./images/test_3.png'),
+            USER_ANSWERS: null,
+
+        },
+        {
+            TYPE: 'SINGLECHOICE',
+            REQUIREMENT: 'Choose the correct answer(s)',
+            QUESTION: `The Nikkei and other Asian stock markets are likely to ____.`,
+            ANSWERS:
+            [
+                "up",
+                "rise",
+                "jump",
+                "start",
+            ],
+            CORRECT_ANS: 1,
+            IMAGE: null,
+            USER_ANSWERS: null,
+        },
+        {
+            TYPE: 'SINGLECHOICE',
+            REQUIREMENT: 'Choose the best word(s) to complete the sentence.',
+            QUESTION: `People ___ to understand every word.`,
+            ANSWERS:
+            [
+                "not",
+                "not need",
+                "don’t need",
+                "need not",
+            ],
+            CORRECT_ANS: 2,
+            IMAGE: null,
+            USER_ANSWERS: null,
+        },
+        {
+            TYPE: 'SINGLECHOICE',
+            REQUIREMENT: 'Choose the best word to complete the sentence.',
+            QUESTION: `Hackers _____ steal sensitive information.`,
+            ANSWERS:
+            [
+                "want",
+                "are",
+                "can",
+                "for"
+            ],
+            CORRECT_ANS: 3,
+            IMAGE: null,
+            USER_ANSWERS: null,
+        },
+        {
+            TYPE: 'SINGLECHOICE',
+            REQUIREMENT: 'Look at the chart. Choose the best word to complete the sentence.',
+            QUESTION: `Cocoa products ____ an average 100-gram milk chocolate bar.`,
+            ANSWERS:
+            [
+                " make up 31% of",
+                "have increased by 31% in",
+                "are not used in",
+                "buy about 31% of"
+
+            ],
+            CORRECT_ANS: 2,
+            IMAGE: require('./images/test_7.png'),
+            USER_ANSWERS: null,
         },
     ]
 }

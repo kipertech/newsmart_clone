@@ -118,9 +118,30 @@ export default class NewsScene extends Component {
     //Main render function
     render() {
         return (
-            <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: 'center' }}>
-                { GLOBAL.ARTICLES.map((value, index) => this.renderCard(value)) }
-            </ScrollView>
+            <View style={{ flex: 1 }}>
+                {/* Action Bar */}
+                <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white' }}>
+                    {/*Menu Button*/}
+                    <TouchableOpacity 
+                        onPress={this.props.passToggle}
+                        style={{ width: 50, height: 50, alignItems: 'center', justifyContent: 'center' }}>
+                        <Image
+                            style={{ width: 20, height: 20 }}
+                            source={require('../images/icon_menu.png')}
+                            resizeMode='stretch' />
+                    </TouchableOpacity>
+
+                    {/* Scene Title */}
+                    <View style={{ width: st.width - 100, marginLeft: 5, justifyContent: 'center' }}>
+                        <Text style={{ color: 'black', fontSize: 18, fontWeight: 'bold' }}>News</Text>
+                    </View>
+                </View>
+
+                <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: 'center' }}>
+                    { GLOBAL.ARTICLES.map((value, index) => this.renderCard(value)) }
+                </ScrollView>
+            </View>
+            
         );
   }
 }
